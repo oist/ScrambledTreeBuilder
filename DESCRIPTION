@@ -38,7 +38,8 @@ Imports:
     tidytree,
     treeio,
     purrr,
-    yaml
+    yaml,
+    httr
 VignetteBuilder: knitr
 Collate: 
     'ConvenientTblTree.R'
@@ -51,6 +52,7 @@ Collate:
     'averageResults.R'
     'bootstrapTree.R'
     'childSpecies.R'
+    'divergenceTimeTree.R'
     'ellipsePlot.R'
     'enr.R'
     'eog.R'
