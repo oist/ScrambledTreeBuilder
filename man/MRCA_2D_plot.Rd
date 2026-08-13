@@ -26,10 +26,10 @@ p + ggplot2::geom_point(
                color = focalClade))
 }
 \seealso{
-Other Plotting functions: 
-\code{\link{ellipsePlot}()},
-\code{\link{treeHeatMap}()},
-\code{\link{visualizeTree}()}
+Other Plotting functions:
+\code{\link[=ellipsePlot]{ellipsePlot()}},
+\code{\link[=treeHeatMap]{treeHeatMap()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy

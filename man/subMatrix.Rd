@@ -40,18 +40,18 @@ subTree(Halo_Tree, 9) |> subMatrix(Halo_PercentDiff)
 
 }
 \seealso{
-Other Functions for trees: 
-\code{\link{childSpecies}()},
-\code{\link{extractValues}()},
-\code{\link{recordAncestor}()}
+Other Functions for trees:
+\code{\link[=childSpecies]{childSpecies()}},
+\code{\link[=extractValues]{extractValues()}},
+\code{\link[=recordAncestor]{recordAncestor()}}
 
-Other Focal clade functions: 
-\code{\link{eog}()},
-\code{\link{focalClade}()},
-\code{\link{recordAncestor}()},
-\code{\link{recordClades}()},
-\code{\link{subTree}()},
-\code{\link{visualizeTree}()}
+Other Focal clade functions:
+\code{\link[=eog]{eog()}},
+\code{\link[=focalClade]{focalClade()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=recordClades]{recordClades()}},
+\code{\link[=subTree]{subTree()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy
