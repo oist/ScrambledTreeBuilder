@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>ScrambledTreeBuilder • ScrambledTreeBuilder</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="ScrambledTreeBuilder">
 </head>
@@ -216,12 +216,12 @@ using the <code><a href="../reference/makeTidyTree.html">makeTidyTree()</a></cod
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>     10    11          1.70 <span style="color: #BB0000;">NA</span>                      FALSE  5.5         <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">Tibble</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/Tree_with_node_IDs-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/Tree_with_node_IDs-1.png" class="r-plt" alt="" width="700"></p>
 <p>The node IDs can be used to manipulate the tree, for instance
 subsetting with the <code>subtree()</code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">Tibble</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/subTree.html">subTree</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/subTree_with_node_IDs-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/subTree_with_node_IDs-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="focal-clades">Focal clades<a class="anchor" aria-label="anchor" href="#focal-clades"></a>
@@ -259,7 +259,7 @@ in the selected colors.</p>
 <span><span class="co">#&gt; Halobacterium genus, node ID: 10, number of genomes: 3</span></span>
 <span><span class="co">#&gt; Haloferax genus, node ID: 8, number of genomes: 2</span></span>
 <span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">Tibble</span><span class="op">)</span> <span class="op">+</span> <span class="va">clades</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Focal clade highlight"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/focalCladeList-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/focalCladeList-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="heatmaps">Heatmaps<a class="anchor" aria-label="anchor" href="#heatmaps"></a>
@@ -270,10 +270,10 @@ and columns are in the same order as the branches of the tree. Focal
 clades can be highlighted too.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/treeHeatMap.html">treeHeatMap</a></span><span class="op">(</span><span class="va">treeMatrix</span>,  <span class="va">Tibble</span>, <span class="va">clades</span>, main <span class="op">=</span> <span class="st">"Percent difference"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/heatmaps-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/heatmaps-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/treeHeatMap.html">treeHeatMap</a></span><span class="op">(</span><span class="va">valueMatrix</span>, <span class="va">Tibble</span>, <span class="va">clades</span>, main <span class="op">=</span> <span class="st">"Scrambling index"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/heatmaps-2.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/heatmaps-2.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="projecton-on-most-recent-common-ancestors">Projecton on most recent common ancestors<a class="anchor" aria-label="anchor" href="#projecton-on-most-recent-common-ancestors"></a>
@@ -357,7 +357,7 @@ tree.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">tibbleWithMultipleValues</span>, <span class="st">"Scrambling_index"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Tree built with Percent difference and labelled with Scrambling Index"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="va">clades</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/tree_with_SI-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/tree_with_SI-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">tibbleWithMultipleValues</span>, <span class="va">tibbleWithMultipleValues</span><span class="op">$</span><span class="va">Scrambling_index</span>, ynudge <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Tree labeled with Scrambling Index and Percent Difference"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -367,20 +367,20 @@ tree.</p>
 <span>  <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"magma"</span>, name <span class="op">=</span> <span class="st">"Percent Identity"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The `label.size` argument of `geom_label()` is deprecated as of ggplot2 3.5.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/two_value_plot-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/two_value_plot-1.png" class="r-plt" alt="" width="700"></p>
 <p>Of course, if you spotted an interesting sub-tree, you can plot the
 node IDs to easily extract it for further analysis.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">tibbleWithMultipleValues</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/tree_with_node_IDs_again-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/tree_with_node_IDs_again-1.png" class="r-plt" alt="" width="700"></p>
 <p>The <code>subTree</code> function can conveniently be used with R’s
 pipe operator to cut a sub-tree at a chosen node.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualizeTree.html">visualizeTree</a></span><span class="op">(</span><span class="va">tibbleWithMultipleValues</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/subTree.html">subTree</a></span><span class="op">(</span>node <span class="op">=</span> <span class="fl">9</span><span class="op">)</span>, <span class="st">"Percent_difference"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/subTree_node_9-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/subTree_node_9-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/subMatrix.html">subMatrix</a></span><span class="op">(</span><span class="va">Tibble</span>, <span class="va">valueMatrix</span>, <span class="fl">9</span>, simpl<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             H_litoreum H_noricense H_salinarum S_japonicum</span></span>
@@ -407,7 +407,7 @@ there is not enough data). MRCAs are colored by their focal clade.</p>
 <span>     , dim1 <span class="op">=</span> <span class="st">"percent_difference_local"</span></span>
 <span>     , dim2 <span class="op">=</span> <span class="st">"index_avg_strandDiscord"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/MRCA_2D_plot.html">MRCA_2D_plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/MRCA_plot-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/MRCA_plot-1.png" class="r-plt" alt="" width="700"></p>
 <p>In ellipse plots, all the pairs of species are displayed and grouped
 by MRCA. These groups are colored by focal clades. Remember that we have
 two values per pair of species (A vs B and B vs A). To simplify the
@@ -417,12 +417,27 @@ plot, use the <code><a href="../reference/averageResults.html">averageResults()<
 <span><span class="fu"><a href="../reference/ellipsePlot.html">ellipsePlot</a></span><span class="op">(</span> <span class="va">exDataFrame</span></span>
 <span>           , dim1 <span class="op">=</span> <span class="st">"percent_difference_local"</span></span>
 <span>           , dim2 <span class="op">=</span> <span class="st">"index_avg_strandDiscord"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/ellipse_plot-1.png" class="r-plt" width="700"></p>
+<p><img src="ScrambledTreeBuilder_files/figure-html/ellipse_plot-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ellipsePlot.html">ellipsePlot</a></span><span class="op">(</span> <span class="va">exDataFrame</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/averageResults.html">averageResults</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>           , dim1 <span class="op">=</span> <span class="st">"percent_difference_local"</span></span>
-<span>           , dim2 <span class="op">=</span> <span class="st">"index_avg_strandDiscord"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ScrambledTreeBuilder_files/figure-html/ellipse_plot-2.png" class="r-plt" width="700"></p>
+<span>           , dim2 <span class="op">=</span> <span class="st">"index_avg_strandDiscord"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There was 1 warning in `summarise()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `across(where(is.numeric), mean, na.rm = TRUE)`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In group 1: `lab = "Halobacterium_noricense\nHalobacterium_litoreum"`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The `...` argument of `across()` is deprecated as of dplyr 1.1.0.</span></span>
+<span><span class="co">#&gt; Supply arguments directly to `.fns` through an anonymous function instead.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   # Previously</span></span>
+<span><span class="co">#&gt;   across(a:b, mean, na.rm = TRUE)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   # Now</span></span>
+<span><span class="co">#&gt;   across(a:b, \(x) mean(x, na.rm = TRUE))</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ScrambledTreeBuilder</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/brennern/ScrambledTreeBuilder/issues&gt;</span>.</span></span></code></pre></div>
+<p><img src="ScrambledTreeBuilder_files/figure-html/ellipse_plot-2.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -431,11 +446,11 @@ plot, use the <code><a href="../reference/averageResults.html">averageResults()<
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Noa Brenner, Charles Plessy, Anika Mittal.</p>
+  <p>Developed by Noa Brenner, Charles Plessy, Anika Mittal, Priscila Biller.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

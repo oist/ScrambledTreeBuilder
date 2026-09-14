@@ -31,6 +31,21 @@ Charles Plessy
 
 ``` r
 averageResults(Halo_DF)
+#> Warning: There was 1 warning in `summarise()`.
+#> ℹ In argument: `across(where(is.numeric), mean, na.rm = TRUE)`.
+#> ℹ In group 1: `lab = "Halobacterium_noricense\nHalobacterium_litoreum"`.
+#> Caused by warning:
+#> ! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
+#> Supply arguments directly to `.fns` through an anonymous function instead.
+#> 
+#>   # Previously
+#>   across(a:b, mean, na.rm = TRUE)
+#> 
+#>   # Now
+#>   across(a:b, \(x) mean(x, na.rm = TRUE))
+#> ℹ The deprecated feature was likely used in the ScrambledTreeBuilder package.
+#>   Please report the issue at
+#>   <https://github.com/brennern/ScrambledTreeBuilder/issues>.
 #> # A tibble: 15 × 237
 #>    lab                aligned_length_Min aligned_length_Q1 aligned_length_Median
 #>    <chr>                           <dbl>             <dbl>                 <dbl>

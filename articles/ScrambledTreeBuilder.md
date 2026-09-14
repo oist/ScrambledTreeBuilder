@@ -1,6 +1,7 @@
 # ScrambledTreeBuilder
 
 ``` r
+
 knitr::opts_chunk$set(cache = FALSE)
 knitr::opts_knit$set(verbose = TRUE)
 ```
@@ -19,6 +20,7 @@ The *ScrambledTreeBuilder* package outputs plots in *ggplot2* format but
 you need to load the *ggplot2* package to further customize them.
 
 ``` r
+
 library(ScrambledTreeBuilder) |> suppressPackageStartupMessages()
 library(ggplot2)              |> suppressPackageStartupMessages()
 ```
@@ -47,6 +49,7 @@ Here we prepare an object called ‘yamlFileData’ that contains the path
 to the files.
 
 ``` r
+
 yamlFileData <- system.file("extdata/yaml", package = "ScrambledTreeBuilder") |>
   resultFiles()
 yamlFileData[1]
@@ -61,6 +64,7 @@ is a pair of species and each column is a statistic or a metadata about
 that species comparison.
 
 ``` r
+
 exDataFrame <- formatStats(yamlFileData)
 ncol(exDataFrame)
 #> [1] 236
@@ -90,6 +94,7 @@ In this vignette, let’s focus on the percent nucleotide difference and
 the scrambling index.
 
 ``` r
+
 # Percent nucleotide difference  We will use it to cluster a tree.
 treeMatrix <- 100 - makeMatrix(exDataFrame, "percent_identity_global", 100, 50)
 round(treeMatrix)
@@ -119,6 +124,7 @@ round(treeMatrix)
 ```
 
 ``` r
+
 # Scrambling index
 valueMatrix <- 1 - makeMatrix(exDataFrame, "index_avg_strandRand", 1, 0.5)
 round(valueMatrix, 2)
@@ -155,6 +161,7 @@ produce a tree in *tibble* format, using the
 function.
 
 ``` r
+
 # Let's average the target-query and query-target replicate pairs.
 (Tibble <- makeTidyTree((treeMatrix/2 + t(treeMatrix)/2)))
 #> # A tbl_tree abstraction: 11 × 7
@@ -176,6 +183,7 @@ function.
 ```
 
 ``` r
+
 visualizeTree(Tibble)
 ```
 
@@ -185,6 +193,7 @@ The node IDs can be used to manipulate the tree, for instance subsetting
 with the `subtree()` function.
 
 ``` r
+
 visualizeTree(Tibble |> subTree(9))
 ```
 
@@ -201,6 +210,7 @@ species. The
 function can take `FocalClade` objects instead of node IDs as input.
 
 ``` r
+
 (Halobacterium <- focalClade(Tibble, "Halobacterium_noricense", "Halobacterium_salinarum", "blue", "Halobacterium genus"))
 #> Halobacterium genus, node ID: 10, number of genomes: 3
 Halobacterium@genomeIDs
@@ -225,6 +235,7 @@ The focal clade objects can be added to plots to highlight the clades in
 the selected colors.
 
 ``` r
+
 Haloferax <- focalClade(Tibble, "Haloferax_mediterranei", "Haloferax_volcanii", "green3", "Haloferax genus")
 (clades <- FocalCladeList(Halobacterium=Halobacterium, Haloferax=Haloferax))
 #> Halobacterium genus, node ID: 10, number of genomes: 3
@@ -242,12 +253,14 @@ and columns are in the same order as the branches of the tree. Focal
 clades can be highlighted too.
 
 ``` r
+
 treeHeatMap(treeMatrix,  Tibble, clades, main = "Percent difference")
 ```
 
 ![](ScrambledTreeBuilder_files/figure-html/heatmaps-1.png)
 
 ``` r
+
 treeHeatMap(valueMatrix, Tibble, clades, main = "Scrambling index")
 ```
 
@@ -264,6 +277,7 @@ averaging all the pairs sharing the same most recent common ancestor,
 represented by an internal node in the tree.
 
 ``` r
+
 (tibbleWithValues <- makeValueTibble(Tibble, valueMatrix, colname = "Scrambling_index"))
 #> # A tbl_tree abstraction: 11 × 8
 #> # which can be converted to treedata or phylo 
@@ -284,6 +298,7 @@ represented by an internal node in the tree.
 ```
 
 ``` r
+
 (tibbleWithMultipleValues <- makeValueTibble(tibbleWithValues, treeMatrix, colname = "Percent_difference"))
 #> # A tbl_tree abstraction: 11 × 9
 #> # which can be converted to treedata or phylo 
@@ -308,6 +323,7 @@ We made multiple tables to show the step-by-step process, but typically
 one would just keep the last table. This can be done with pipes.
 
 ``` r
+
 makeTidyTree((treeMatrix/2 + t(treeMatrix)/2)) |>
   makeValueTibble(valueMatrix, colname = "Scrambling_index") |>
   makeValueTibble(treeMatrix,  colname = "Percent_difference")
@@ -339,6 +355,7 @@ difference values as a distance, and computed average scrambling index
 for all the nodes. We can plot these values as labels on the tree.
 
 ``` r
+
 visualizeTree(tibbleWithMultipleValues, "Scrambling_index") +
   ggplot2::ggtitle(paste("Tree built with Percent difference and labelled with Scrambling Index")) + clades
 ```
@@ -346,6 +363,7 @@ visualizeTree(tibbleWithMultipleValues, "Scrambling_index") +
 ![](ScrambledTreeBuilder_files/figure-html/tree_with_SI-1.png)
 
 ``` r
+
 visualizeTree(tibbleWithMultipleValues, tibbleWithMultipleValues$Scrambling_index, ynudge = 0.2) +
   ggplot2::ggtitle("Tree labeled with Scrambling Index and Percent Difference") +
   ggplot2::scale_color_viridis_c(name = "Scrambling index", option = "cividis") +
@@ -354,7 +372,7 @@ visualizeTree(tibbleWithMultipleValues, tibbleWithMultipleValues$Scrambling_inde
   viridis::scale_color_viridis(option = "magma", name = "Percent Identity")
 #> Warning: The `label.size` argument of `geom_label()` is deprecated as of ggplot2 3.5.0.
 #> ℹ Please use the `linewidth` argument instead.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```
@@ -365,6 +383,7 @@ Of course, if you spotted an interesting sub-tree, you can plot the node
 IDs to easily extract it for further analysis.
 
 ``` r
+
 visualizeTree(tibbleWithMultipleValues)
 ```
 
@@ -374,12 +393,14 @@ The `subTree` function can conveniently be used with R’s pipe operator
 to cut a sub-tree at a chosen node.
 
 ``` r
+
 visualizeTree(tibbleWithMultipleValues |> subTree(node = 9), "Percent_difference")
 ```
 
 ![](ScrambledTreeBuilder_files/figure-html/subTree_node_9-1.png)
 
 ``` r
+
 subMatrix(Tibble, valueMatrix, 9, simpl=TRUE)
 #>             H_litoreum H_noricense H_salinarum S_japonicum
 #> H_litoreum   0.0000000   0.6054199   0.4662469   0.8119173
@@ -401,6 +422,7 @@ and ploted with error bars (which we do not see here because there is
 not enough data). MRCAs are colored by their focal clade.
 
 ``` r
+
 exDataFrame <- recordAncestor(exDataFrame, Tibble)
 MRCAs( exDataFrame, clades
      , dim1 = "percent_difference_local"
@@ -418,6 +440,7 @@ plot, use the
 function like below.
 
 ``` r
+
 exDataFrame <- recordClades(exDataFrame, clades)
 ellipsePlot( exDataFrame
            , dim1 = "percent_difference_local"
@@ -427,9 +450,25 @@ ellipsePlot( exDataFrame
 ![](ScrambledTreeBuilder_files/figure-html/ellipse_plot-1.png)
 
 ``` r
+
 ellipsePlot( exDataFrame |> averageResults()
            , dim1 = "percent_difference_local"
            , dim2 = "index_avg_strandDiscord")
+#> Warning: There was 1 warning in `summarise()`.
+#> ℹ In argument: `across(where(is.numeric), mean, na.rm = TRUE)`.
+#> ℹ In group 1: `lab = "Halobacterium_noricense\nHalobacterium_litoreum"`.
+#> Caused by warning:
+#> ! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
+#> Supply arguments directly to `.fns` through an anonymous function instead.
+#> 
+#>   # Previously
+#>   across(a:b, mean, na.rm = TRUE)
+#> 
+#>   # Now
+#>   across(a:b, \(x) mean(x, na.rm = TRUE))
+#> ℹ The deprecated feature was likely used in the ScrambledTreeBuilder package.
+#>   Please report the issue at
+#>   <https://github.com/brennern/ScrambledTreeBuilder/issues>.
 ```
 
 ![](ScrambledTreeBuilder_files/figure-html/ellipse_plot-2.png)

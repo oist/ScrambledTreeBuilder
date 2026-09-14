@@ -27,6 +27,7 @@ started](https://brennern.github.io/ScrambledTreeBuilder/articles/ScrambledTreeB
 vignette for details.
 
 ``` r
+
 library(ScrambledTreeBuilder)
 #> Loading required package: S7
 visualizeTree(Halo_Tree, "Scrambling_index") +
