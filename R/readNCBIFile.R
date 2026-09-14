@@ -14,7 +14,7 @@
 #' @export
 #'
 getNCBIinfo <- function(node, your_tibble, your_ncbidf, colname) {
-  your_df[paste(gsub(" ", "_", your_ncbidf$Organism.Name), your_ncbidf$Assembly.Accession, sep = "_") == node,][[colname]]
+  your_ncbidf[paste(gsub(" ", "_", your_ncbidf$Organism.Name), your_ncbidf$Assembly.Accession, sep = "_") == node,][[colname]]
 }
 
 
