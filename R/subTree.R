@@ -26,10 +26,8 @@ NULL
 #' @family Focal clade functions
 #'
 #' @export
-
 subTree <- new_generic("subTree", c("tree_tibble", "node"))
 
-#' @export
 method(subTree, list(ConvenientTblTree, class_numeric)) <- function(tree_tibble, node) {
   tree_tibble$node.orig <- tree_tibble$node
   tree_tibble |> as.treedata() |> tree_subset(node, levels_back = 0) |> as_tibble() |> suppressMessages() |> makeItConvenient()
