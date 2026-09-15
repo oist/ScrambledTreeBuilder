@@ -49,7 +49,6 @@ readNCBIfile <- function(tree, ncbi_file) {
                           list(ncbi_name="Assembly.Stats.Total.Sequence.Length",        tree_name="NCBI_seqlen"))
   # Add NCBI info for every node in the tree with a label (e.g. "Callithrix_jacchus_GCA_049354715.1")
   nodes <- tree$label[!is.na(tree$label)] |> purrr::set_names() |> purrr::map(getNCBIinfo, tree=tree, ncbi_df=ncbi_df)
-  print(nodes)
   for(newcol in desired_columns){
     tree[, newcol$tree_name] <- NA
     tree[match(names(nodes), tree$label), newcol$tree_name] <- (nodes |> purrr::map_vec(\(row) row[[newcol$ncbi_name]]))

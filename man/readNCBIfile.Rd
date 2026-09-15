@@ -4,15 +4,15 @@
 \alias{readNCBIfile}
 \title{Adds NCBI info to the tree}
 \usage{
-readNCBIfile(your_tibble, input_file)
+readNCBIfile(tree, ncbi_file)
 }
 \arguments{
-\item{your_tibble}{A \code{\link{ConvenientTblTree}} object.}
+\item{tree}{A \code{\link{ConvenientTblTree}} object.}
 
-\item{input_file}{Path to the file \code{ncbi_datasets.tsv}.}
+\item{ncbi_file}{Path to the file \code{ncbi_datasets.tsv}.}
 }
 \value{
-The \code{your_tibble} object with 3 additional columns:
+The \code{tree} object with 3 additional columns:
 \itemize{
 \item \code{NCBI_id}, containing the NCBI identifier;
 \item \code{NCBI_nbchr}, containing the number of chromosomes; and

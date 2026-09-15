@@ -2,24 +2,22 @@
 % Please edit documentation in R/readNCBIFile.R
 \name{getNCBIinfo}
 \alias{getNCBIinfo}
-\title{Gets the NCBI info for a given node.}
+\title{Gets the NCBI info for a given node label.}
 \usage{
-getNCBIinfo(node, your_tibble, your_ncbidf, colname)
+getNCBIinfo(node_label, tree, ncbi_df)
 }
 \arguments{
-\item{node}{Node}
+\item{node_label}{The label from the desired node (e.g. "Callithrix_jacchus_GCA_049354715.1").}
 
-\item{your_tibble}{Tibble data developed from tree.}
+\item{tree}{A \code{\link{ConvenientTblTree}} object.}
 
-\item{your_ncbidf}{Dataframe containing the NCBI info from \code{ncbi_datasets.tsv}.}
-
-\item{colname}{The desired column from the NCBI dataframe.}
+\item{ncbi_df}{Dataframe containing the NCBI info from \code{ncbi_datasets.tsv}.}
 }
 \value{
-The row in the dataframe corresponding to the specified node.
+The row in the dataframe corresponding to the specified node label.
 }
 \description{
-Gets the NCBI info for a given node.
+Gets the NCBI info for a given node label.
 }
 \seealso{
 Other Functions for trees:
