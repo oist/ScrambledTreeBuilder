@@ -88,7 +88,10 @@ importFrom(tidytree,
   tree_subset
 )
 importFrom(treeio,MRCA)
-importFrom(utils,read.delim)
+importFrom(utils,
+  read.delim,
+  read.table
+)
 importFrom(yaml,
   read_yaml,
   yaml.load
