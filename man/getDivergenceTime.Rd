@@ -12,7 +12,7 @@ getDivergenceTime(taxid1, taxid2)
 \item{taxid2}{An integer: The NCBI id of the other taxon}
 }
 \value{
-A list in which the first item is the median divergence time (\code{divtimeMedian}),
+A list in which the first item is the divergence time (\code{divtime}),
 and the last two items are the divergence time confidence interval
 (\code{divtimeCI_low} and \code{divtimeCI_high}).
 If the divergence time is not found in the TimeTree database, it returns \code{NA}.
