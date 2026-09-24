@@ -25,10 +25,12 @@ getTimeline <- function(taxid) {
   # Example of request to the TimeTree's API: 
   # - Request: http://timetree.temple.edu/api/timeline/9555
   # - Answer from TimeTree: 
-  # ncbi-id,scientific_name,common_name,level,rank,branch_length,correction,ci_high,ci_low
-  # 84512,unnamed,,41,unknown,0.72,0,7.5,0.23
-  # 84508,unnamed,,40,unknown,1.99,0,7.5,0.39
-  # 84504,Papio,,39,genus,1.85,0,7.5,1.19
+  # ncbi-id,scientific_name,common_name,level,rank,summary_age,adjusted_age,ci_high,ci_low
+  # -1,unnamed,,46,unknown,1.1,1.1,1.48,0.72
+  # -1,unnamed,,45,unknown,1.27,1.36,1.97,0.56
+  # -1,unnamed,,44,unknown,1.27,1.58,1.97,0.56
+  # 9554,Papio,,43,genus,1.9,1.9,2.31,1.48
+  # -1,unnamed,,42,unknown,4.68,4.68,5.08,4.27
   # ...
   timetreeRequest  <- paste(timetreeBaseTimeline, taxid, sep="")
   timetreeResponse <- GET(timetreeRequest)
@@ -36,8 +38,11 @@ getTimeline <- function(taxid) {
   header <- lines |> strsplit(split="\n", fixed=TRUE) |> (\(x) x[[1]][1])() |> strsplit(split = ",", fixed = TRUE) |> (\(x) x[[1]])() # First line: header; Other lines: data.
   if(length(header) >= 8) {
     df    <- read.csv(text=lines)
-    df    <- df[ c("ncbi.id", "scientific_name", "rank", "branch_length", "ci_low",       "ci_high")]
-    names(df) <- c("NCBIid",  "name",            "rank", "divtime",       "divtimeCI_low", "divtimeCI_high")
+    # In TimeTree there are two possibilities for the divergence time (here we go with "adjusted age"):
+    # - "Summary age" is the median of all studies.
+    # - "Adjusted age" is the adjusted time, computed in cases where a node is older than its parent in the global timetree reconstructed from individual timetrees.
+    df    <- df[ c("ncbi.id", "scientific_name", "rank", "adjusted_age", "ci_low",       "ci_high")]
+    names(df) <- c("NCBIid",  "name",            "rank", "divtime",     "divtimeCI_low", "divtimeCI_high")
     df
   } else {
     NA
