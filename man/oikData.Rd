@@ -28,7 +28,7 @@ by a beta version of the \url{https://nf-co.re/pairgenomealign} pipeline.
 oikData
 }
 \seealso{
-Other Lazy-loaded data: 
+Other Lazy-loaded data:
 \code{\link{Haloarchaea}}
 }
 \author{

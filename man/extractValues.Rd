@@ -26,9 +26,9 @@ unique(Halo_Tree$parent) |> sort() |>
   purrr::set_names() |> sapply(extractValues, Halo_Tree, Halo_PercentDiff)
 }
 \seealso{
-Other Functions for trees: 
-\code{\link{childSpecies}()},
-\code{\link{recordAncestor}()},
-\code{\link{subMatrix}()}
+Other Functions for trees:
+\code{\link[=childSpecies]{childSpecies()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=subMatrix]{subMatrix()}}
 }
 \concept{Functions for trees}

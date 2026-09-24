@@ -26,13 +26,13 @@ when it did not find it.
 recordClades(Halo_DF, Halo_FocalClades)
 }
 \seealso{
-Other Focal clade functions: 
-\code{\link{eog}()},
-\code{\link{focalClade}()},
-\code{\link{recordAncestor}()},
-\code{\link{subMatrix}()},
-\code{\link{subTree}()},
-\code{\link{visualizeTree}()}
+Other Focal clade functions:
+\code{\link[=eog]{eog()}},
+\code{\link[=focalClade]{focalClade()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subTree]{subTree()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy

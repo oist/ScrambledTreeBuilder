@@ -38,7 +38,8 @@ Imports:
     tidytree,
     treeio,
     purrr,
-    yaml
+    yaml,
+    httr
 VignetteBuilder: knitr
 Collate: 
     'ConvenientTblTree.R'
@@ -64,6 +65,7 @@ Collate:
     'removeAssemblies.R'
     'resultFiles.R'
     'subMatrix.R'
+    'timeTree.R'
     'treeHeatMap.R'
     'visualizeTree.R'
     'zzz.R'

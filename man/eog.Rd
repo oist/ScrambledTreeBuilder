@@ -25,13 +25,13 @@ eog(Halo_Tree, Halo_FocalClades$Haloferax)
 
 }
 \seealso{
-Other Focal clade functions: 
-\code{\link{focalClade}()},
-\code{\link{recordAncestor}()},
-\code{\link{recordClades}()},
-\code{\link{subMatrix}()},
-\code{\link{subTree}()},
-\code{\link{visualizeTree}()}
+Other Focal clade functions:
+\code{\link[=focalClade]{focalClade()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=recordClades]{recordClades()}},
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subTree]{subTree()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy
