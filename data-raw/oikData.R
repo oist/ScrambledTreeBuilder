@@ -46,7 +46,18 @@ oikData[["2025_07_17"]] <- structure(list(MRCA = c(20, 25, 26, 27, 28, 29, 30, 3
 10L, 8L, 6L, 2L, 4L, 2L), clade = c("Oikopleura", "Oikopleura",
 "Oikopleura", "Oikopleura", "Oikopleura", "Oikopleura", "Oikopleura",
 "Oikopleura", "Oikopleura", "Oikopleura"), color = c("red", "red",
-"red", "red", "red", "red", "red", "red", "red", "red")), row.names = c(NA,
+"red", "red", "red", "red", "red", "red", "red", "red"), type = c("MRCA", "MRCA", "MRCA", "MRCA", "MRCA", "MRCA", "MRCA",
+"MRCA", "MRCA", "MRCA"), size = c(4, 4, 4, 4, 4, 4, 4, 4, 4,
+4), alpha = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)), row.names = c(NA,
 -10L), class = c("tbl_df", "tbl", "data.frame"))
+
+# Hover text formatted like in MRCAs(), placed after the color column.
+oikData[["2025_07_17"]]$hover_text <- with(oikData[["2025_07_17"]], paste0(
+  "MRCA: ", MRCA,
+  "<br>Clade: ", clade,
+  "<br>x: ", round(x, 2),
+  "<br>y: ", round(y, 2),
+  "<br>n: ", n))
+oikData[["2025_07_17"]] <- oikData[["2025_07_17"]][, c("MRCA", "x", "y", "xerr", "yerr", "n", "clade", "color", "hover_text", "type", "size", "alpha")]
 
 usethis::use_data(oikData, overwrite = TRUE)
