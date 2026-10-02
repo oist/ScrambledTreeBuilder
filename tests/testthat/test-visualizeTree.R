@@ -1,0 +1,27 @@
+test_that("visualizeTree() labels internal nodes with their IDs by default", {
+  p <- visualizeTree(Halo_Tree)
+  expect_s3_class(p, "ggtree")
+  b <- ggplot2::ggplot_build(p)
+  labels <- b$data[[length(b$data)]]$label
+  expect_setequal(labels, Halo_Tree$node)
+  expect_equal(p$theme$legend.position, "none")
+})
+
+test_that("visualizeTree() labels nodes with a column or a vector of values", {
+  by_name  <- visualizeTree(Halo_Tree, "Scrambling_index")
+  by_value <- visualizeTree(Halo_Tree, Halo_Tree$Scrambling_index)
+  b <- ggplot2::ggplot_build(by_name)
+  labels <- b$data[[length(b$data)]]$label
+  expect_setequal(na.omit(labels), round(na.omit(Halo_Tree$Scrambling_index), 2))
+  expect_equal(ggplot2::layer_data(by_name, length(by_name$layers))$label,
+               ggplot2::layer_data(by_value, length(by_value$layers))$label)
+})
+
+test_that("visualizeTree() rounds and nudges labels", {
+  p <- visualizeTree(Halo_Tree, "Percent_difference", valueround = 0, ynudge = 0.5)
+  q <- visualizeTree(Halo_Tree, "Percent_difference", valueround = 0)
+  n <- length(p$layers)
+  labels <- ggplot2::layer_data(p, n)$label
+  expect_true(all(na.omit(labels) == round(na.omit(labels))))
+  expect_equal(ggplot2::layer_data(p, n)$y - ggplot2::layer_data(q, n)$y, rep(0.5, 11))
+})
