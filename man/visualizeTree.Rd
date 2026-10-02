@@ -56,7 +56,7 @@ Other Plotting functions:
 \code{\link[=treeHeatMap]{treeHeatMap()}}
 }
 \author{
-Noah Brenner
+Noa Brenner
 
 Charles Plessy
 }

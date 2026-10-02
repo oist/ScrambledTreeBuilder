@@ -16,7 +16,7 @@
 #' contains a 2-line text item to allow some plots to display the `species1` and
 #' `species2` identifiers in a way that is easily centered on the data point.
 #'
-#' @author Noah Brenner
+#' @author Noa Brenner
 #' @author Charles Plessy
 #'
 #' @family Data load functions

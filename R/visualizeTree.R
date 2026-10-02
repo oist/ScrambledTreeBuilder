@@ -14,7 +14,7 @@
 #'
 #' @export
 #'
-#' @author Noah Brenner
+#' @author Noa Brenner
 #' @author Charles Plessy
 #'
 #' @family Focal clade functions

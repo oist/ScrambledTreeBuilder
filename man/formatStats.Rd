@@ -37,7 +37,7 @@ Other Data load functions:
 \code{\link[=resultFiles]{resultFiles()}}
 }
 \author{
-Noah Brenner
+Noa Brenner
 
 Charles Plessy
 }
