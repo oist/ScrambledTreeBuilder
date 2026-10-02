@@ -1,0 +1,65 @@
+test_that("ancestralStates() keeps tip values and reconstructs internal nodes", {
+  tree <- ancestralStates(Halo_Tree, c(Halobacterium_litoreum  = 3, Halobacterium_noricense = 3,
+                                       Halobacterium_salinarum = 3, Salarchaeum_japonicum  = 5,
+                                       Haloferax_mediterranei  = 2, Haloferax_volcanii     = 2))
+  expect_equal(tree$state[tree$isTip], c(3, 3, 3, 2, 2, 5))
+  expect_equal(tree$state[tree$node == 8],  2)  # Haloferax
+  expect_equal(tree$state[tree$node == 10], 3)  # Halobacterium
+  expect_equal(tree$state[tree$node == 11], 3)
+  expect_true(is.na(tree$state[tree$node == 9]))  # 3 or 5
+  expect_true(is.na(tree$state[tree$node == 7]))  # root: 2, 3 or 5
+})
+
+test_that("ancestralStates() reads values from a taxon table column", {
+  tree <- ancestralStates(Halo_Tree, halo_taxons(), column = "ChromNumber")
+  expect_true("ChromNumber" %in% names(tree))
+  expect_equal(tree$ChromNumber[tree$node == 10], 3)
+  expect_equal(tree$ChromNumber[tree$isTip], c(3, 3, 3, 2, 2, 5))
+})
+
+test_that("ancestralStates() gives the same state everywhere when all tips agree", {
+  tree <- ancestralStates(Halo_Tree, setNames(rep(1, 6), halo_species))
+  expect_equal(tree$state, rep(1, 11))
+})
+
+test_that("ancestralStates() resolves ambiguous nodes from their parent", {
+  # ((A:12, B:12), (C:12, D:14)): the root is 12, so node CD is 12 too and
+  # the change to 14 happens on the branch leading to D.
+  tree <- ancestralStates(abcd_tree(), c(A = 12, B = 12, C = 12, D = 14))
+  expect_equal(tree$state[tree$node == mrca_of(tree, "C", "D")], 12)
+  expect_equal(tree$state[tree$node == mrca_of(tree, "A", "D")], 12)
+  expect_equal(tree$state[tree$label %in% "D"], 14)
+})
+
+test_that("ancestralStates() leaves truly ambiguous nodes as NA", {
+  tree <- ancestralStates(abcd_tree(), c(A = 1, B = 2, C = 3, D = 4))
+  expect_true(all(is.na(tree$state[!tree$isTip])))
+  expect_equal(tree$state[tree$isTip], c(1, 2, 3, 4))
+})
+
+test_that("ancestralStates() keeps the type of the values", {
+  tree <- ancestralStates(abcd_tree(), c(A = "x", B = "x", C = "y", D = "y"))
+  expect_type(tree$state, "character")
+  expect_equal(tree$state[tree$node == mrca_of(tree, "C", "D")], "y")
+  tree <- ancestralStates(abcd_tree(), c(A = 1L, B = 1L, C = 1L, D = 2L))
+  expect_type(tree$state, "integer")
+})
+
+test_that("ancestralStates() treats missing tip values as unknown", {
+  values <- c(A = 12, B = 12, C = 14)
+  expect_warning(tree <- ancestralStates(abcd_tree(), values), "D")
+  expect_true(is.na(tree$state[tree$label %in% "D"]))
+  expect_equal(tree$state[tree$node == mrca_of(tree, "C", "D")], 14)
+  expect_warning(tree <- ancestralStates(abcd_tree(), c(values, D = NA)), "D")
+  expect_true(is.na(tree$state[tree$label %in% "D"]))
+})
+
+test_that("ancestralStates() ignores values for species absent from the tree", {
+  expect_equal(ancestralStates(abcd_tree(), c(A = 1, B = 1, C = 2, D = 2, E = 3)),
+               ancestralStates(abcd_tree(), c(A = 1, B = 1, C = 2, D = 2)))
+})
+
+test_that("ancestralStates() requires named values or a valid column", {
+  expect_error(ancestralStates(abcd_tree(), c(1, 1, 2, 2)), "named")
+  expect_error(ancestralStates(Halo_Tree, halo_taxons(), column = "nope"), "nope")
+})

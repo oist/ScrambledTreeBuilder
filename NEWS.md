@@ -8,6 +8,10 @@
   Fujita).
 * New `computeENR()` and `cladeENRtable()` functions for detecting outlier
   clades.
+* New `visualizeKaryotype()` function that colors the branches of a tree by
+  chromosome number and prints the numbers next to the species names, and
+  new `ancestralStates()` function that reconstructs ancestral values of a
+  species trait by parsimony.
 * `subTree()` now outputs trees with proper `isTip` and `y` columns.
 * Fix `MRCAs()` so that it does not output averages values for species in the
   results table but not in the input tree.

@@ -65,6 +65,7 @@ Collate:
     'MRCAs.R'
     'Remove_outliers.R'
     'ThinByMin.R'
+    'ancestralStates.R'
     'averageResults.R'
     'bootstrapTree.R'
     'childSpecies.R'
@@ -83,6 +84,7 @@ Collate:
     'resultFiles.R'
     'subMatrix.R'
     'treeHeatMap.R'
+    'visualizeKaryotype.R'
     'visualizeTree.R'
     'zzz.R'
 Config/roxygen2/version: 8.1.0

@@ -2,6 +2,7 @@
 
 export(FocalCladeList)
 export(MRCA_2D_plot)
+export(ancestralStates)
 export(averageResults)
 export(childSpecies)
 export(cladeENRtable)
@@ -25,6 +26,7 @@ export(subMatrix)
 export(subTree)
 export(thinByMin)
 export(treeHeatMap)
+export(visualizeKaryotype)
 export(visualizeTree)
 import(S7)
 importFrom(ape,
@@ -58,16 +60,22 @@ importFrom(ggplot2,
   geom_errorbar,
   geom_errorbarh,
   geom_point,
+  geom_text,
   ggplot,
   labs,
   scale_alpha_identity,
   scale_color_manual,
+  scale_colour_discrete,
   scale_fill_manual,
   scale_size_identity,
   scale_x_continuous,
   scale_y_continuous,
   theme_bw,
   theme_minimal
+)
+importFrom(ggtree,
+  geom_tiplab,
+  ggtree
 )
 importFrom(matrixStats,
   colAlls,
@@ -88,7 +96,8 @@ importFrom(stats,
   na.omit,
   predict,
   quantile,
-  sd
+  sd,
+  setNames
 )
 importFrom(tibble,tibble)
 importFrom(tidyselect,all_of)
