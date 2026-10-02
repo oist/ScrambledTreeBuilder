@@ -106,6 +106,9 @@ test pass.  Never write a test that asserts the buggy behaviour.
 ## Commits
 
 - Keep commits focused: tests, documentation, generated files and
-  behaviour changes in separate commits where practical.
+  behaviour changes in separate commits where practical.  In particular,
+  when a new function adds itself to the `@family` lists of other help
+  pages, commit those regenerated `man/` files separately from the
+  function.
 - Commit messages: a short summary line, then a body explaining why when it
   is not obvious.
