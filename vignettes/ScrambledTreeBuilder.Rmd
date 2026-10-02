@@ -196,7 +196,7 @@ visualizeTree(tibbleWithMultipleValues, tibbleWithMultipleValues$Scrambling_inde
   ggplot2::ggtitle("Tree labeled with Scrambling Index and Percent Difference") +
   ggplot2::scale_color_viridis_c(name = "Scrambling index", option = "cividis") +
   ggnewscale::new_scale_colour() +
-  ggtree::geom_label(ggtree::aes(label=round(Percent_difference), color = Percent_difference), label.size = 0.25, size = 3, na.rm = TRUE, label.padding = ggtree::unit(0.15, "lines"), nudge_y = -0.2) +
+  ggtree::geom_label(ggtree::aes(label=round(Percent_difference), color = Percent_difference), linewidth = 0.25, size = 3, na.rm = TRUE, label.padding = ggtree::unit(0.15, "lines"), nudge_y = -0.2) +
   viridis::scale_color_viridis(option = "magma", name = "Percent Identity")
 ```
 

@@ -29,7 +29,7 @@ visualizeTree <- function(your_tibble, value="node", valueround = 2, outerlabels
   addValuesToTree <- function (ggtree, value, valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0) {
     ggtree + ggtree::geom_label( ggtree::aes( label = round(value, digits = valueround)
                                             , color = value)
-                               , label.size = outerlabelsize
+                               , linewidth = outerlabelsize
                                , size = innerlabelsize
                                , na.rm = TRUE
                                , label.padding = ggtree::unit(0.15, "lines")

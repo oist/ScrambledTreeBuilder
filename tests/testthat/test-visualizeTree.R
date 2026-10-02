@@ -25,3 +25,13 @@ test_that("visualizeTree() rounds and nudges labels", {
   expect_true(all(na.omit(labels) == round(na.omit(labels))))
   expect_equal(ggplot2::layer_data(p, n)$y - ggplot2::layer_data(q, n)$y, rep(0.5, 11))
 })
+
+test_that("visualizeTree() sets the label border width", {
+  p <- visualizeTree(Halo_Tree, outerlabelsize = 0.7)
+  expect_equal(p$layers[[length(p$layers)]]$aes_params$linewidth, 0.7)
+})
+
+test_that("visualizeTree() does not use deprecated ggplot2 arguments", {
+  withr::local_options(lifecycle_verbosity = "error")
+  expect_no_error(visualizeTree(Halo_Tree))
+})

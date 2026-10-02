@@ -43,7 +43,7 @@ Imports:
     ape,
     data.table,
     dplyr,
-    ggplot2,
+    ggplot2 (>= 3.5.0),
     ggforce,
     ggtree,
     matrixStats,

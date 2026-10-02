@@ -13,6 +13,8 @@
   results table but not in the input tree.
 * Fix again accidental discarding of YAML files with `gz` in their name.
 * Speed up `formatStats()` roughly 8 times by using `sapply` instead of `do.call`.
+* Use `linewidth` instead of the deprecated `label.size` in `visualizeTree()`
+  (requires ggplot2 >= 3.5.0).
 * Add `hover_text`, `type`, `size` and `alpha` columns to `oikData` `2025_07_17`
   so that it matches the plot data of `MRCA_2D_plot()`.
 
