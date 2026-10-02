@@ -140,11 +140,15 @@ fitchStates <- function(tree, tipValues) {
 # Maximum likelihood with ape::ace().  Returns a list of two vectors in the
 # order of the tree's rows: the states (NA below threshold) and the
 # probability of the most likely state.
-#' @importFrom ape ace
+#' @importFrom ape ace node.depth.edgelength
 #' @importFrom tidytree as.phylo
 #' @noRd
 aceStates <- function(tree, tipValues, model, threshold) {
   phy <- as.phylo(tree)
+  # Scale the tree to a height of 1.  This does not change the probabilities
+  # (only the rates, which are not reported), but the optimiser of ape::ace()
+  # can fail with very short or very long branches.
+  phy$edge.length <- phy$edge.length / max(node.depth.edgelength(phy))
   x   <- tipValues[phy$tip.label]
   if (identical(model, "ordered")) {
     if (!is.numeric(x) || any(x != round(x)))

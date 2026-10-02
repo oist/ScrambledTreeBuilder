@@ -34,6 +34,7 @@ importFrom(ape,
   ace,
   as.phylo,
   cophenetic.phylo,
+  node.depth.edgelength,
   prop.clades,
   prop.part
 )

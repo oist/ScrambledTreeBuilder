@@ -123,3 +123,21 @@ test_that("ancestralStates(method = 'ML') needs a value for every tip", {
 test_that("ancestralStates() rejects unknown methods", {
   expect_error(ancestralStates(abcd_tree(), c(A = 1, B = 1, C = 1, D = 1), method = "magic"))
 })
+
+test_that("ancestralStates(method = 'ML') does not depend on the scale of branch lengths", {
+  # Regression: depending on the scale of the branch lengths, ape::ace()
+  # sometimes failed to fit the ordered model ("NA/NaN/Inf in foreign
+  # function call"), for instance here with 20 vs 25 and a 10000-fold
+  # shrink, or 20 vs 30 and a 100-fold shrink.
+  tc <- two_clades()
+  for (high in c(25, 30)) {
+    values <- setNames(ifelse(tc$values == 20, 20, high), names(tc$values))
+    fits <- lapply(c(1, 1e2, 1e4), \(scale) {
+      tree <- tc$tree
+      tree$branch.length <- tree$branch.length / scale
+      ancestralStates(tree, values, method = "ML", model = "ordered", threshold = 0.4)
+    })
+    expect_equal(fits[[2]][, c("state", "state_prob")], fits[[1]][, c("state", "state_prob")], tolerance = 1e-4)
+    expect_equal(fits[[3]][, c("state", "state_prob")], fits[[1]][, c("state", "state_prob")], tolerance = 1e-4)
+  }
+})
