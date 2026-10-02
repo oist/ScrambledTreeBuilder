@@ -83,8 +83,16 @@ test pass.  Never write a test that asserts the buggy behaviour.
   `NAMESPACE` by hand: edit the roxygen comments and run
   `roxygen2::roxygenise()`.  If roxygen2 itself is upgraded, commit the
   resulting reformatting separately from content changes.
+- Import functions from other packages with `@importFrom pkg fun` in the
+  roxygen block of the function that uses them, and call them without the
+  `pkg::` prefix.  Older code still uses prefixes; convert it when you touch
+  it.  Packages in `Suggests` are the exception: call them with `pkg::` after
+  checking `requireNamespace()`.
+- Functions written from scratch by an AI agent get an `@author` tag naming
+  the model, for example `@author Claude Opus 5.5 (Anthropic)`.  Do not add
+  it to existing functions that you only modify.
 - Match the surrounding style: base R pipe `|>`, `\(x)` lambdas, and
-  `.data$col` inside dplyr verbs.
+  `.data$col` inside dplyr verbs and `aes()`.
 
 ## Example data
 
