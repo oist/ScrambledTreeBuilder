@@ -23,6 +23,7 @@ childSpecies(Halo_Tree, 7)
 }
 \seealso{
 Other Functions for trees:
+\code{\link[=ancestralStates]{ancestralStates()}},
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
 \code{\link[=subMatrix]{subMatrix()}}

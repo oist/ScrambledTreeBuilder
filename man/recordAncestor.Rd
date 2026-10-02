@@ -24,6 +24,7 @@ recordAncestor(Halo_DF, Halo_Tree)$MRCA
 }
 \seealso{
 Other Functions for trees:
+\code{\link[=ancestralStates]{ancestralStates()}},
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=subMatrix]{subMatrix()}}

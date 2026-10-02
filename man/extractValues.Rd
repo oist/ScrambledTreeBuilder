@@ -27,6 +27,7 @@ extractValues(7, Halo_Tree, Halo_PercentDiff)
 }
 \seealso{
 Other Functions for trees:
+\code{\link[=ancestralStates]{ancestralStates()}},
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
 \code{\link[=subMatrix]{subMatrix()}}

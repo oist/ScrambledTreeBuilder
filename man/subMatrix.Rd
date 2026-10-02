@@ -41,6 +41,7 @@ subTree(Halo_Tree, 9) |> subMatrix(Halo_PercentDiff)
 }
 \seealso{
 Other Functions for trees:
+\code{\link[=ancestralStates]{ancestralStates()}},
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=recordAncestor]{recordAncestor()}}
