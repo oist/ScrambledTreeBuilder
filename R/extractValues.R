@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' unique(Halo_Tree$parent) |> sort() |>
-#'   purrr::set_names() |> sapply(extractValues, Halo_Tree, Halo_PercentDiff)
+#' # Average percent difference between the two branches of node 7.
+#' extractValues(7, Halo_Tree, Halo_PercentDiff)
 
 extractValues <- function(node, your_tibble, pairwise_matrix, fun = mean) {
   children <- childSpecies(your_tibble, node)

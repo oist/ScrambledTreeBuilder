@@ -48,7 +48,10 @@ Fit a LOESS mean trend ŷ(x), compute residuals r = y - ŷ, and standardize
 them to unit-free, z-like scores ENRz. Positive ENRz = above-trend; negative = below-trend.
 }
 \examples{
-# out <- MRCAs(df, focal) |> computeENR()
-# head(out)
+# MRCA summaries along a linear trend; clade A is shifted above it.
+tb <- data.frame(x = 1:40, y = 0.02 * (1:40) + rnorm(40, sd = 0.02), n = 2,
+                 clade = rep(c("A", "B", "C", "D"), each = 10))
+tb$y[3:6] <- tb$y[3:6] + 0.15
+computeENR(tb) |> head()
 
 }

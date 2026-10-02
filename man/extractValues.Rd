@@ -22,8 +22,8 @@ Values to store in a variable (percent difference, scrambling index, etc.)
 Extract values from a matrix.
 }
 \examples{
-unique(Halo_Tree$parent) |> sort() |>
-  purrr::set_names() |> sapply(extractValues, Halo_Tree, Halo_PercentDiff)
+# Average percent difference between the two branches of node 7.
+extractValues(7, Halo_Tree, Halo_PercentDiff)
 }
 \seealso{
 Other Functions for trees:

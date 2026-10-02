@@ -32,23 +32,13 @@
 #' @export
 #'
 #' @examples
+#' makeMatrix(Halo_DF, "percent_difference_global", 0)
+#'
+#' # Missing values get NA by default unless specified in the 4th argument,
+#' # or imputed from the reverse pair.
 #' df <- Halo_DF
-#'
-#' # Missing values get NA by default unless specified in the 4th argument.
 #' df["Salarchaeum_japonicum___Haloferax_volcanii", "percent_difference_global"] <- NA
-#'
-#' makeMatrix(df, "percent_difference_global", 0)
 #' makeMatrix(df, "percent_difference_global", 0, impute = "average")
-#'
-#' # NA value imputation with missForest use random numbers
-#' set.seed(1664)
-#' df["Haloferax_volcanii___Salarchaeum_japonicum", "percent_difference_global"] <- NA
-#' makeMatrix(df, "percent_difference_global", 0, impute =    "average")
-#' makeMatrix(df, "percent_difference_global", 0, impute = "missForest")
-#' makeMatrix(df, "percent_difference_global", 0, impute = "missForest2")
-#'
-#' # Warns and returns NULL if column not found
-#' makeMatrix(df, "you_will_never_find_this_column", 0, 50)
 
 makeMatrix <- function(pairwise_data, column="", defaultDiagonal = 100, defaultValue = NA, impute = c("no", "average", "missForest", "missForest2"), ...) {
   if(is.null(pairwise_data[[column]])) {

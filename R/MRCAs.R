@@ -20,9 +20,6 @@
 #' @importFrom dplyr group_by summarize sym ungroup filter transmute slice_max left_join mutate
 #' @importFrom tidyselect all_of
 #' @importFrom tibble tibble
-#'
-#' @examples
-#' ScrambledTreeBuilder:::MRCAs(Halo_DF, Halo_FocalClades)
 
 MRCAs <- function(pairwise_data, clades = NULL, x = "percent_difference_local", y = "index_avg_strandDiscord", center = mean, dispersion = sd) {
 
@@ -135,8 +132,6 @@ MRCAs <- function(pairwise_data, clades = NULL, x = "percent_difference_local", 
 #' @examples
 #' MRCA_2D_plot(Halo_DF, Halo_FocalClades) + ggplot2::labs(x="nucl. diff", y="scrambling")
 #' MRCA_2D_plot(averageResults(Halo_DF), Halo_FocalClades)
-#' MRCA_2D_plot(Halo_DF, Halo_FocalClades, errorbars = FALSE)
-#' MRCA_2D_plot(Halo_DF, Halo_FocalClades, pairs     = FALSE)
 #' MRCA_2D_plot(Halo_DF, Halo_FocalClades) |> plotly::ggplotly(tooltip ="text")
 
 MRCA_2D_plot <- function(pairwise_data, clades = NULL, x = "percent_difference_local", y = "index_avg_strandDiscord", errorbars = TRUE, pairs = TRUE, xlim = 40, ylim = 1) {

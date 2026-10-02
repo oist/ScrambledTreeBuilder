@@ -22,6 +22,3 @@ invalid upon subsetting.
 \details{
 This private function (re)computes \code{isTip} and \code{y}.
 }
-\examples{
-ScrambledTreeBuilder:::makeItConvenient(Halo_Tree)
-}

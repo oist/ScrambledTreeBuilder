@@ -46,9 +46,6 @@ makeTidyTree <- function(pairwise_matrix, n_bootstrap = 0) {
 #'
 #' @returns A [`stbTree`] object with valid `isTip` and `y`
 #' information.
-#'
-#' @examples
-#' ScrambledTreeBuilder:::makeItConvenient(Halo_Tree)
 
 makeItConvenient <- function(tree) {
   plotted_tree <- visualizeTree(tree)$data # where tree gains isTip, x, y, branch and angle columns

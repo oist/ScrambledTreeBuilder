@@ -40,8 +40,6 @@ bars and the pair data in addition to its aggregated statistics.
 \examples{
 MRCA_2D_plot(Halo_DF, Halo_FocalClades) + ggplot2::labs(x="nucl. diff", y="scrambling")
 MRCA_2D_plot(averageResults(Halo_DF), Halo_FocalClades)
-MRCA_2D_plot(Halo_DF, Halo_FocalClades, errorbars = FALSE)
-MRCA_2D_plot(Halo_DF, Halo_FocalClades, pairs     = FALSE)
 MRCA_2D_plot(Halo_DF, Halo_FocalClades) |> plotly::ggplotly(tooltip ="text")
 }
 \seealso{

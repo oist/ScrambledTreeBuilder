@@ -25,7 +25,9 @@ Summarise point-level ENR statistics at the clade level using weighted means
 also sit on the lower-divergence side (\code{x_mean} <= median \code{x_mean}).
 }
 \examples{
-# tb_enr <- MRCAs(df, focal) |> computeENR()
-# cladeENRtable(tb_enr, z_cut = 1)
+tb <- data.frame(x = 1:40, y = 0.02 * (1:40) + rnorm(40, sd = 0.02), n = 2,
+                 clade = rep(c("A", "B", "C", "D"), each = 10))
+tb$y[3:6] <- tb$y[3:6] + 0.15
+computeENR(tb) |> cladeENRtable(z_cut = 1)
 
 }

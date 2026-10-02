@@ -21,8 +21,11 @@
 #'   - `ENRz`: standardized residual (z-like score)
 #'
 #' @examples
-#' # out <- MRCAs(df, focal) |> computeENR()
-#' # head(out)
+#' # MRCA summaries along a linear trend; clade A is shifted above it.
+#' tb <- data.frame(x = 1:40, y = 0.02 * (1:40) + rnorm(40, sd = 0.02), n = 2,
+#'                  clade = rep(c("A", "B", "C", "D"), each = 10))
+#' tb$y[3:6] <- tb$y[3:6] + 0.15
+#' computeENR(tb) |> head()
 #'
 #' @export
 #' @importFrom stats loess predict mad sd
@@ -88,8 +91,10 @@ computeENR <- function(tb,
 #'   `x_mean`, `y_mean`, `n_nodes`, and `ENR_label`.
 #'
 #' @examples
-#' # tb_enr <- MRCAs(df, focal) |> computeENR()
-#' # cladeENRtable(tb_enr, z_cut = 1)
+#' tb <- data.frame(x = 1:40, y = 0.02 * (1:40) + rnorm(40, sd = 0.02), n = 2,
+#'                  clade = rep(c("A", "B", "C", "D"), each = 10))
+#' tb$y[3:6] <- tb$y[3:6] + 0.15
+#' computeENR(tb) |> cladeENRtable(z_cut = 1)
 #'
 #' @export
 #' @importFrom dplyr filter group_by summarise mutate case_when arrange desc n
