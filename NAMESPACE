@@ -27,66 +27,82 @@ export(thinByMin)
 export(treeHeatMap)
 export(visualizeTree)
 import(S7)
-importFrom(ape,as.phylo)
-importFrom(ape,cophenetic.phylo)
-importFrom(ape,prop.clades)
-importFrom(ape,prop.part)
-importFrom(dplyr,across)
-importFrom(dplyr,arrange)
-importFrom(dplyr,case_when)
-importFrom(dplyr,desc)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,pull)
-importFrom(dplyr,slice_max)
-importFrom(dplyr,summarise)
-importFrom(dplyr,summarize)
-importFrom(dplyr,sym)
-importFrom(dplyr,transmute)
-importFrom(dplyr,ungroup)
-importFrom(dplyr,where)
+importFrom(ape,
+  as.phylo,
+  cophenetic.phylo,
+  prop.clades,
+  prop.part
+)
+importFrom(dplyr,
+  across,
+  arrange,
+  case_when,
+  desc,
+  filter,
+  group_by,
+  left_join,
+  mutate,
+  n,
+  pull,
+  slice_max,
+  summarise,
+  summarize,
+  sym,
+  transmute,
+  ungroup,
+  where
+)
 importFrom(ggforce,geom_mark_ellipse)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,geom_errorbar)
-importFrom(ggplot2,geom_errorbarh)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_alpha_identity)
-importFrom(ggplot2,scale_color_manual)
-importFrom(ggplot2,scale_fill_manual)
-importFrom(ggplot2,scale_size_identity)
-importFrom(ggplot2,scale_x_continuous)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(ggplot2,theme_bw)
-importFrom(ggplot2,theme_minimal)
-importFrom(matrixStats,colAlls)
-importFrom(matrixStats,rowAlls)
+importFrom(ggplot2,
+  aes,
+  geom_errorbar,
+  geom_errorbarh,
+  geom_point,
+  ggplot,
+  labs,
+  scale_alpha_identity,
+  scale_color_manual,
+  scale_fill_manual,
+  scale_size_identity,
+  scale_x_continuous,
+  scale_y_continuous,
+  theme_bw,
+  theme_minimal
+)
+importFrom(matrixStats,
+  colAlls,
+  rowAlls
+)
 importFrom(pheatmap,pheatmap)
 importFrom(plotly,ggplotly)
-importFrom(rlang,.data)
-importFrom(rlang,.env)
-importFrom(stats,as.dist)
-importFrom(stats,complete.cases)
-importFrom(stats,hclust)
-importFrom(stats,loess)
-importFrom(stats,mad)
-importFrom(stats,na.omit)
-importFrom(stats,predict)
-importFrom(stats,quantile)
-importFrom(stats,sd)
+importFrom(rlang,
+  .data,
+  .env
+)
+importFrom(stats,
+  as.dist,
+  complete.cases,
+  hclust,
+  loess,
+  mad,
+  na.omit,
+  predict,
+  quantile,
+  sd
+)
 importFrom(tibble,tibble)
 importFrom(tidyselect,all_of)
-importFrom(tidytree,as.treedata)
-importFrom(tidytree,as_tibble)
-importFrom(tidytree,child)
-importFrom(tidytree,offspring)
-importFrom(tidytree,tree_subset)
+importFrom(tidytree,
+  as.treedata,
+  as_tibble,
+  child,
+  offspring,
+  tree_subset
+)
 importFrom(tools,file_path_sans_ext)
 importFrom(treeio,MRCA)
 importFrom(utils,read.delim)
-importFrom(yaml,read_yaml)
-importFrom(yaml,yaml.load)
+importFrom(yaml,
+  read_yaml,
+  yaml.load
+)
