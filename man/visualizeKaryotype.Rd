@@ -11,6 +11,10 @@ visualizeKaryotype(
   offset = 0.05,
   background = NULL,
   colors = NULL,
+  value = NULL,
+  valueround = 2,
+  points = FALSE,
+  axis = FALSE,
   ...
 )
 }
@@ -31,6 +35,21 @@ numbers stand out.  By default, the most common one among the tips.}
 
 \item{colors}{A vector of colors named after the chromosome numbers, to
 replace the default palette.}
+
+\item{value}{Values to label on the internal nodes of the tree, or name of
+a column in the tree object, like in \code{\link[=visualizeTree]{visualizeTree()}}.  By default,
+no values are shown.}
+
+\item{valueround}{Number of decimals to round values.}
+
+\item{points}{Mark the nodes with points colored by value instead of
+labels, for large trees.}
+
+\item{axis}{Draw an axis of pairwise distances: for each node, the
+distance between the species on each side of it, assuming the tree
+was built by \code{\link[=makeTidyTree]{makeTidyTree()}} (UPGMA), so that the height of a node
+is half that distance.  The axis has no title: add one with
+\code{\link[ggplot2:xlab]{ggplot2::xlab()}}.}
 
 \item{...}{Options passed to \code{\link[=ancestralStates]{ancestralStates()}} to choose the method of
 reconstruction (\code{method}, \code{model}, \code{threshold}).}
@@ -63,6 +82,14 @@ taxons <- data.frame(row.names = Halo_Tree$label[Halo_Tree$isTip],
                      ChromNumber = c(3, 3, 3, 2, 2, 5))
 visualizeKaryotype(Halo_Tree, taxons)
 visualizeKaryotype(Halo_Tree, taxons) + cladeBars(Halo_FocalClades)
+
+# Overlay node values, with an axis of the distances used to build the tree.
+visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", axis = TRUE) +
+  ggplot2::xlab("Pairwise percent difference")
+
+# Node values have their own colour scale, which can be replaced.
+visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", points = TRUE) +
+  ggplot2::scale_colour_viridis_c(name = "Scrambling index", option = "magma")
 
 }
 \seealso{

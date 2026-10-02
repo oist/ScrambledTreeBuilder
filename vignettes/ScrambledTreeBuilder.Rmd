@@ -177,6 +177,20 @@ visualizeKaryotype(Tibble, taxons, method = "ML", model = "ordered", threshold =
   cladeBars(clades)
 ```
 
+Like in `visualizeTree()`, values stored on the tree (see
+`makeValueTibble()` below) can be shown on the internal nodes, as labels or,
+for large trees, as points (`points = TRUE`).
+They have their own colour scale.  The `axis` option draws the distance that
+was used to build the tree, here the percent difference, between the species
+on each side of a node.  The axis has no title: add one with `xlab()`.
+
+```{r karyotype_values}
+makeValueTibble(Tibble, valueMatrix, colname = "Scrambling_index") |>
+  visualizeKaryotype(taxons, value = "Scrambling_index", axis = TRUE) +
+  cladeBars(clades) +
+  xlab("Pairwise percent difference")
+```
+
 # Heatmaps
 
 To further quality control the tree and its genomes, it is possible to plot

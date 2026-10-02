@@ -27,6 +27,17 @@
 #'        numbers stand out.  By default, the most common one among the tips.
 #' @param colors A vector of colors named after the chromosome numbers, to
 #'        replace the default palette.
+#' @param value Values to label on the internal nodes of the tree, or name of
+#'        a column in the tree object, like in [visualizeTree()].  By default,
+#'        no values are shown.
+#' @param valueround Number of decimals to round values.
+#' @param points Mark the nodes with points colored by value instead of
+#'        labels, for large trees.
+#' @param axis Draw an axis of pairwise distances: for each node, the
+#'        distance between the species on each side of it, assuming the tree
+#'        was built by [makeTidyTree()] (UPGMA), so that the height of a node
+#'        is half that distance.  The axis has no title: add one with
+#'        [ggplot2::xlab()].
 #' @param ... Options passed to [ancestralStates()] to choose the method of
 #'        reconstruction (`method`, `model`, `threshold`).
 #'
@@ -45,18 +56,31 @@
 #' visualizeKaryotype(Halo_Tree, taxons)
 #' visualizeKaryotype(Halo_Tree, taxons) + cladeBars(Halo_FocalClades)
 #'
+#' # Overlay node values, with an axis of the distances used to build the tree.
+#' visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", axis = TRUE) +
+#'   ggplot2::xlab("Pairwise percent difference")
+#'
+#' # Node values have their own colour scale, which can be replaced.
+#' visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", points = TRUE) +
+#'   ggplot2::scale_colour_viridis_c(name = "Scrambling index", option = "magma")
+#'
 #' @importFrom ggplot2 aes geom_text guide_legend guides labs
-#' @importFrom ggplot2 scale_colour_manual scale_linetype_manual
+#' @importFrom ggplot2 scale_colour_continuous scale_colour_manual scale_linetype_manual
 #' @importFrom grDevices hcl.colors
 #' @importFrom stats na.omit setNames
+#' @importFrom ggnewscale new_scale_colour
 #' @importFrom ggtree ggtree geom_tiplab
 #' @importFrom rlang .data
 #' @importFrom tidytree as.treedata
 #' @export
 
 visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.05,
-                               background = NULL, colors = NULL, ...) {
+                               background = NULL, colors = NULL, value = NULL,
+                               valueround = 2, points = FALSE, axis = FALSE, ...) {
   tree <- ancestralStates(tree, taxons, column, ...)
+  valueName <- if (length(value) == 1 && is.character(value)) value else "value"
+  if (length(value) == 1 && is.character(value))
+    value <- tree[ , value, drop = TRUE]
   states <- sort(unique(na.omit(tree[[column]])))
   if (is.null(colors)) {
     if (is.null(background)) {
@@ -82,7 +106,7 @@ visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.
   suppressMessages(
     gg <- gg + geom_tiplab(as_ylab = TRUE)
   ) # Scale for y is already present.
-  gg +
+  gg <- gg +
     geom_text(data = numberColumn,
               aes(x = .data$x, y = .data$y, label = .data[[column]]),
               inherit.aes = FALSE, hjust = 0, size = 3) +
@@ -91,6 +115,29 @@ visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.
     scale_linetype_manual(values = c(`FALSE` = "solid", `TRUE` = "dashed"), guide = "none") +
     guides(colour = guide_legend(override.aes = list(linetype = keyTypes))) +
     labs(colour = column)
+  if (!is.null(value)) {
+    gg <- addValuesToTree(gg + new_scale_colour(), value = value,
+                          valueround = valueround, points = points) +
+      scale_colour_continuous(name = valueName)
+  }
+  if (isTRUE(axis)) gg <- addPairwiseAxis(gg)
+  gg
+}
+
+# Add an axis of pairwise distances, increasing from the tips (0) towards the
+# root.  With UPGMA, the height of a node is half the distance between the
+# species on each side of it.
+#' @importFrom ggplot2 element_line element_text scale_x_continuous theme
+#' @noRd
+addPairwiseAxis <- function(gg) {
+  xmax   <- max(gg$data$x[gg$data$isTip])
+  breaks <- pretty(c(0, 2 * xmax))
+  breaks <- breaks[breaks <= 2 * xmax]
+  suppressMessages( # Scale for x is already present.
+    gg + scale_x_continuous(breaks = xmax - breaks / 2, labels = breaks)
+  ) + theme(axis.line.x  = element_line(),
+            axis.ticks.x = element_line(),
+            axis.text.x  = element_text())
 }
 
 # Okabe-Ito colors, without black and grey (used for the background and

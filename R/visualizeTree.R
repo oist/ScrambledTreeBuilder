@@ -26,15 +26,6 @@
 #' visualizeTree(Halo_Tree, "Scrambling_index") # same
 
 visualizeTree <- function(your_tibble, value="node", valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0) {
-  addValuesToTree <- function (ggtree, value, valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0) {
-    ggtree + ggtree::geom_label( ggtree::aes( label = round(value, digits = valueround)
-                                            , color = value)
-                               , linewidth = outerlabelsize
-                               , size = innerlabelsize
-                               , na.rm = TRUE
-                               , label.padding = ggtree::unit(0.15, "lines")
-                               , nudge_y = ynudge, nudge_x = xnudge)
-  }
   noLegend <- FALSE
   if (length(value) == 1 && value == "node") noLegend <- TRUE
   if (length(value) == 1 && is.character(value))
@@ -50,4 +41,31 @@ visualizeTree <- function(your_tibble, value="node", valueround = 2, outerlabels
   } else {
     gg
   }
+}
+
+# Label the nodes of a plotted tree with values, or mark them with points
+# colored by the values.  Shared by visualizeTree() and visualizeKaryotype().
+#' @importFrom ggplot2 aes geom_label geom_point position_nudge unit
+#' @importFrom rlang .data
+#' @noRd
+addValuesToTree <- function (ggtree, value, valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0, points = FALSE) {
+  if (isTRUE(points)) {
+    # Only nodes with a value: unlike labels, points with NA values are drawn.
+    withValues <- function(d) {
+      d$value <- value
+      d[!is.na(d$value), ]
+    }
+    return(ggtree + geom_point( data = withValues
+                              , aes(color = .data$value)
+                              , size = innerlabelsize
+                              , position = position_nudge(x = xnudge, y = ynudge)))
+  }
+  ggtree + geom_label( aes( label = round(value, digits = valueround)
+                          , color = value)
+                     , linewidth = outerlabelsize
+                     , linetype = "solid" # Not inherited from dashed branches.
+                     , size = innerlabelsize
+                     , na.rm = TRUE
+                     , label.padding = unit(0.15, "lines")
+                     , nudge_y = ynudge, nudge_x = xnudge)
 }

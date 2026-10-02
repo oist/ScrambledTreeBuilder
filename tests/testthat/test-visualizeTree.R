@@ -35,3 +35,11 @@ test_that("visualizeTree() does not use deprecated ggplot2 arguments", {
   withr::local_options(lifecycle_verbosity = "error")
   expect_no_error(visualizeTree(Halo_Tree))
 })
+
+test_that("visualizeTree() output is unchanged by the internal helper", {
+  p <- visualizeTree(Halo_Tree, "Scrambling_index", ynudge = 0.2)
+  l <- p$layers[[length(p$layers)]]
+  expect_s3_class(l$geom, "GeomLabel")
+  expect_equal(l$aes_params$linewidth, 0.25)
+  expect_equal(l$aes_params$size, 3)
+})

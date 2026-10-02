@@ -103,3 +103,68 @@ test_that("visualizeKaryotype() passes reconstruction options to ancestralStates
   root <- p$data$node[p$data$parent == p$data$node]
   expect_equal(p$data$ChromNumber[p$data$node == root], 21)
 })
+
+test_that("visualizeKaryotype() labels internal nodes with values", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), value = "Scrambling_index")
+  i <- layer_index(p, "GeomLabel")
+  d <- ggplot2::layer_data(p, i)
+  expect_setequal(na.omit(d$label), round(na.omit(Halo_Tree$Scrambling_index), 2))
+  # Same with a vector of values, and with another rounding.
+  q <- visualizeKaryotype(Halo_Tree, halo_taxons(), value = Halo_Tree$Scrambling_index, valueround = 1)
+  expect_setequal(na.omit(ggplot2::layer_data(q, i)$label), round(na.omit(Halo_Tree$Scrambling_index), 1))
+})
+
+test_that("visualizeKaryotype() node values have their own colour scale", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), value = "Scrambling_index")
+  q <- visualizeKaryotype(Halo_Tree, halo_taxons())
+  expect_equal(ggplot2::layer_data(p, 1)$colour, ggplot2::layer_data(q, 1)$colour)
+  # ggnewscale renames the aesthetic of the karyotype scale.
+  scales <- ggplot2::ggplot_build(p)$plot$scales$scales
+  karyotype <- Filter(\(s) any(startsWith(s$aesthetics, "colour_ggnewscale")), scales)[[1]]
+  expect_equal(karyotype$get_labels(), c("2", "3", "5", "ambiguous"))
+  values <- Filter(\(s) identical(s$aesthetics, "colour"), scales)[[1]]
+  expect_equal(values$name, "Scrambling_index")
+  d <- ggplot2::layer_data(p, layer_index(p, "GeomLabel"))
+  expect_gt(length(unique(d$colour[!is.na(d$label)])), 1)
+})
+
+test_that("visualizeKaryotype() can draw node values as points", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), value = "Scrambling_index", points = TRUE)
+  expect_true(is.na(layer_index(p, "GeomLabel")))
+  d <- ggplot2::layer_data(p, layer_index(p, "GeomPoint"))
+  expect_equal(nrow(d), 5)  # Internal nodes only.
+  expect_setequal(d$x, p$data$x[!p$data$isTip])
+})
+
+test_that("visualizeKaryotype() draws no node values by default", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
+  expect_true(is.na(layer_index(p, "GeomLabel")))
+  expect_true(is.na(layer_index(p, "GeomPoint")))
+})
+
+test_that("visualizeKaryotype() axis shows pairwise distances from the tips", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = TRUE)
+  x <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x
+  xmax <- max(p$data$x[p$data$isTip])
+  breaks <- x$get_breaks()
+  labels <- as.numeric(x$get_labels())
+  ok <- !is.na(breaks)
+  expect_equal(labels[ok], 2 * (xmax - breaks[ok]))
+  expect_true(0 %in% labels)
+  # The Haloferax node sits at their (symmetrised) pairwise distance.
+  node8 <- p$data$x[p$data$node == 8]
+  expect_equal(2 * (xmax - node8), halo_sym()["Haloferax_mediterranei", "Haloferax_volcanii"])
+  expect_s3_class(p$theme$axis.text.x, "ggplot2::element_text")
+})
+
+test_that("visualizeKaryotype() has no axis by default", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
+  expect_s3_class(p$theme$axis.text.x, "ggplot2::element_blank")
+})
+
+test_that("visualizeKaryotype() value labels have solid borders", {
+  # The labels should not inherit the dashed linetype of ambiguous branches.
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), value = "Scrambling_index")
+  d <- ggplot2::layer_data(p, layer_index(p, "GeomLabel"))
+  expect_true(all(d$linetype %in% c("solid", 1)))
+})

@@ -58,10 +58,14 @@ importFrom(dplyr,
   where
 )
 importFrom(ggforce,geom_mark_ellipse)
+importFrom(ggnewscale,new_scale_colour)
 importFrom(ggplot2,
   aes,
+  element_line,
+  element_text,
   geom_errorbar,
   geom_errorbarh,
+  geom_label,
   geom_point,
   geom_rect,
   geom_text,
@@ -69,16 +73,20 @@ importFrom(ggplot2,
   guide_legend,
   guides,
   labs,
+  position_nudge,
   scale_alpha_identity,
   scale_color_manual,
+  scale_colour_continuous,
   scale_colour_manual,
   scale_fill_manual,
   scale_linetype_manual,
   scale_size_identity,
   scale_x_continuous,
   scale_y_continuous,
+  theme,
   theme_bw,
-  theme_minimal
+  theme_minimal,
+  unit
 )
 importFrom(ggtree,
   geom_tiplab,
