@@ -63,3 +63,63 @@ test_that("ancestralStates() requires named values or a valid column", {
   expect_error(ancestralStates(abcd_tree(), c(1, 1, 2, 2)), "named")
   expect_error(ancestralStates(Halo_Tree, halo_taxons(), column = "nope"), "nope")
 })
+
+test_that("ancestralStates(method = 'ML') reconstructs well-supported clades", {
+  tc <- two_clades()
+  tree <- ancestralStates(tc$tree, tc$values, method = "ML")
+  clade1 <- mrca_of(tree, "sp1", "sp10")
+  clade2 <- mrca_of(tree, "sp11", "sp20")
+  expect_equal(tree$state[tree$node == clade1], 20)
+  expect_equal(tree$state[tree$node == clade2], 22)
+  expect_gt(tree$state_prob[tree$node == clade1], 0.95)
+  expect_equal(tree$state_prob[tree$isTip], rep(1, 20))
+  expect_equal(tree$state[tree$isTip], unname(tc$values[tree$label[tree$isTip]]))
+})
+
+test_that("ancestralStates(method = 'ML') leaves poorly supported nodes as NA", {
+  tc <- two_clades()
+  tree <- ancestralStates(tc$tree, tc$values, method = "ML")
+  root <- tree$node[tree$parent == tree$node]
+  expect_true(is.na(tree$state[tree$node == root]))
+  expect_equal(tree$state_prob[tree$node == root], 0.5, tolerance = 1e-3)
+})
+
+test_that("ancestralStates(method = 'ML') uses the threshold", {
+  tree <- ancestralStates(Halo_Tree, halo_taxons(), "ChromNumber", method = "ML")
+  expect_true(all(is.na(tree$ChromNumber[!tree$isTip])))
+  expect_true(all(tree$ChromNumber_prob[!tree$isTip] < 0.95))
+  tree <- ancestralStates(Halo_Tree, halo_taxons(), "ChromNumber", method = "ML", threshold = 0.8)
+  expect_equal(tree$ChromNumber[tree$node == 10], 3)
+  expect_equal(tree$ChromNumber[tree$node == 11], 3)
+  expect_true(is.na(tree$ChromNumber[tree$node == 8]))  # 2, with probability 0.77
+  expect_equal(tree$ChromNumber_prob[tree$node == 8], 0.77, tolerance = 0.01)
+})
+
+test_that("ancestralStates(model = 'ordered') allows unobserved intermediate states", {
+  tc <- two_clades()
+  tree <- ancestralStates(tc$tree, tc$values, method = "ML", model = "ordered", threshold = 0.4)
+  root <- tree$node[tree$parent == tree$node]
+  expect_equal(tree$state[tree$node == root], 21)
+  tree <- ancestralStates(tc$tree, tc$values, method = "ML", model = "ER", threshold = 0.4)
+  expect_true(tree$state[tree$node == root] %in% c(20, 22))
+})
+
+test_that("ancestralStates(model = 'ordered') requires integer values", {
+  expect_error(ancestralStates(abcd_tree(), c(A = "x", B = "x", C = "y", D = "y"),
+                               method = "ML", model = "ordered"), "integer")
+})
+
+test_that("ancestralStates(method = 'ML') warns when the model can not be fitted", {
+  # Values alternating within sister pairs carry no phylogenetic signal.
+  expect_warning(ancestralStates(abcd_tree(), c(A = 1, B = 3, C = 1, D = 3),
+                                 method = "ML", model = "ordered"),
+                 "uniform")
+})
+
+test_that("ancestralStates(method = 'ML') needs a value for every tip", {
+  expect_error(ancestralStates(abcd_tree(), c(A = 12, B = 12, C = 14), method = "ML"), "D")
+})
+
+test_that("ancestralStates() rejects unknown methods", {
+  expect_error(ancestralStates(abcd_tree(), c(A = 1, B = 1, C = 1, D = 1), method = "magic"))
+})

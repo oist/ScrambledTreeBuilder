@@ -5,7 +5,8 @@
 #' numbers next to the species names.
 #'
 #' The chromosome numbers of internal nodes are reconstructed with
-#' [ancestralStates()].  Each branch takes the color of the node it leads to.
+#' [ancestralStates()], by parsimony unless another method is chosen with the
+#' `...` options.  Each branch takes the color of the node it leads to.
 #' Branches leading to nodes whose state is ambiguous are dashed and light
 #' grey.  Chromosome numbers are treated as discrete values: the most common
 #' one is dark grey and each of the others has its own color from the
@@ -26,6 +27,8 @@
 #'        numbers stand out.  By default, the most common one among the tips.
 #' @param colors A vector of colors named after the chromosome numbers, to
 #'        replace the default palette.
+#' @param ... Options passed to [ancestralStates()] to choose the method of
+#'        reconstruction (`method`, `model`, `threshold`).
 #'
 #' @returns A `ggtree` plot, to which focal clades can be added (see
 #' [focalClade()]).
@@ -52,8 +55,8 @@
 #' @export
 
 visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.05,
-                               background = NULL, colors = NULL) {
-  tree <- ancestralStates(tree, taxons, column)
+                               background = NULL, colors = NULL, ...) {
+  tree <- ancestralStates(tree, taxons, column, ...)
   states <- sort(unique(na.omit(tree[[column]])))
   if (is.null(colors)) {
     if (is.null(background)) {

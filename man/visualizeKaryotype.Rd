@@ -10,7 +10,8 @@ visualizeKaryotype(
   column = "ChromNumber",
   offset = 0.05,
   background = NULL,
-  colors = NULL
+  colors = NULL,
+  ...
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ numbers stand out.  By default, the most common one among the tips.}
 
 \item{colors}{A vector of colors named after the chromosome numbers, to
 replace the default palette.}
+
+\item{...}{Options passed to \code{\link[=ancestralStates]{ancestralStates()}} to choose the method of
+reconstruction (\code{method}, \code{model}, \code{threshold}).}
 }
 \value{
 A \code{ggtree} plot, to which focal clades can be added (see
@@ -42,7 +46,8 @@ numbers next to the species names.
 }
 \details{
 The chromosome numbers of internal nodes are reconstructed with
-\code{\link[=ancestralStates]{ancestralStates()}}.  Each branch takes the color of the node it leads to.
+\code{\link[=ancestralStates]{ancestralStates()}}, by parsimony unless another method is chosen with the
+\code{...} options.  Each branch takes the color of the node it leads to.
 Branches leading to nodes whose state is ambiguous are dashed and light
 grey.  Chromosome numbers are treated as discrete values: the most common
 one is dark grey and each of the others has its own color from the

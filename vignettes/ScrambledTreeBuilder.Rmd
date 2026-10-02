@@ -164,6 +164,19 @@ taxons <- data.frame(row.names = c("Halobacterium_litoreum", "Halobacterium_nori
 visualizeKaryotype(Tibble, taxons) + cladeBars(clades)
 ```
 
+Parsimony ignores branch lengths and resolves nodes whenever one number
+needs fewer changes.  For a statistical view of the uncertainty, use
+`method = "ML"` to reconstruct ancestral numbers by maximum likelihood with
+`ape::ace()`.  The `"ordered"` model only allows changes by one chromosome
+at a time, as in fusions and fissions.  Nodes whose most likely number has a
+probability below `threshold` are dashed.  With only six species, the
+likelihood is uncertain everywhere, so let's lower the threshold.
+
+```{r karyotype_ML}
+visualizeKaryotype(Tibble, taxons, method = "ML", model = "ordered", threshold = 0.4) +
+  cladeBars(clades)
+```
+
 # Heatmaps
 
 To further quality control the tree and its genomes, it is possible to plot

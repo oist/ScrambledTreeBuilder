@@ -41,3 +41,16 @@ abcd_tree <- function() {
 mrca_of <- function(tree, a, b) {
   treeio::MRCA(tree, which(tree$label %in% a), which(tree$label %in% b))$node
 }
+
+# Two clades of ten species, with 20 and 22 chromosomes.  Small distances
+# within clades, large between them.
+two_clades <- function() {
+  set.seed(1)
+  sp  <- paste0("sp", 1:20)
+  grp <- rep(1:2, each = 10)
+  D <- outer(grp, grp, \(a, b) ifelse(a == b, 2, 20)) + matrix(runif(400), 20)
+  D <- (D + t(D)) / 2
+  diag(D) <- 0
+  dimnames(D) <- list(sp, sp)
+  list(tree = makeTidyTree(D), values = setNames(ifelse(grp == 1, 20, 22), sp))
+}

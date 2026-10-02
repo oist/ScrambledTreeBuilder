@@ -4,7 +4,14 @@
 \alias{ancestralStates}
 \title{Reconstruct ancestral states of a species trait}
 \usage{
-ancestralStates(tree, values, column = NULL)
+ancestralStates(
+  tree,
+  values,
+  column = NULL,
+  method = c("parsimony", "ML"),
+  model = "ER",
+  threshold = 0.95
+)
 }
 \arguments{
 \item{tree}{A \code{\link{stbTree}} object.}
@@ -15,32 +22,63 @@ and the tip labels as row names).}
 
 \item{column}{When \code{values} is a data frame, the name of the column
 containing the values.}
+
+\item{method}{\code{"parsimony"} (default) or \code{"ML"} (maximum likelihood).}
+
+\item{model}{For \code{method = "ML"}, the model of state changes (see below).}
+
+\item{threshold}{For \code{method = "ML"}, the probability above which the most
+likely state of a node is reported.}
 }
 \value{
 The \code{tree} with a new column, named after \code{column} or \code{"state"},
 containing the tip values and the reconstructed internal node values, with
-\code{NA} for ambiguous nodes.  Missing tip values are treated as unknown (any
-state) during reconstruction, with a warning.
+\code{NA} for ambiguous nodes.  With \code{method = "ML"}, a second column with the
+\verb{_prob} suffix contains the probability of the most likely state of each
+node (1 for tips).
 }
 \description{
 Given a value for each species (tip) of a tree, such as its chromosome
-number, infer the value of each internal node with Fitch parsimony, that
-is, with the smallest number of changes along the branches.
+number, infer the value of each internal node, either with Fitch parsimony
+(the smallest number of changes along the branches) or by maximum
+likelihood with \code{\link[ape:ace]{ape::ace()}}.
 }
-\details{
+\section{Parsimony}{
+
 The values are treated as discrete states: 12 is as different from 13 as
 from 24.  The first pass of the algorithm collects, from the tips to the
 root, the set of states each node could have.  The second pass, from the
 root to the tips, narrows each node's set to the states it shares with its
 parent, if any.  Nodes left with more than one possible state are
-ambiguous and get \code{NA}.  Tips keep their original values.
+ambiguous and get \code{NA}.  Missing tip values are treated as unknown (any
+state), with a warning.  Branch lengths are ignored.
 }
+
+\section{Maximum likelihood}{
+
+The values are fitted with a continuous-time Markov model of state changes
+along the branches, whose lengths are taken as time.  The \code{model} argument
+is passed to \code{\link[ape:ace]{ape::ace()}}: \code{"ER"} (one rate for all changes), \code{"SYM"},
+\code{"ARD"}, or a custom matrix.  In addition, \code{"ordered"} allows only changes
+by one step between integer values, which suits chromosome numbers changed
+by fusions and fissions; the states then include all the integers between
+the smallest and the largest value, even if no species has them.
+
+Each internal node gets its most likely state if its marginal probability
+is at least \code{threshold}, and \code{NA} otherwise.  Every tip needs a value.
+The results are only as good as the tree: distance trees are not
+time-calibrated phylogenies.
+}
+
 \examples{
 # Pretend chromosome numbers (the real ones are all 1).
 chr <- c(Halobacterium_litoreum = 3, Halobacterium_noricense = 3,
          Halobacterium_salinarum = 3, Salarchaeum_japonicum  = 5,
          Haloferax_mediterranei  = 2, Haloferax_volcanii     = 2)
 ancestralStates(Halo_Tree, chr)
+
+# With six species, maximum likelihood is uncertain everywhere.
+ancestralStates(Halo_Tree, chr, method = "ML")
 
 }
 \seealso{

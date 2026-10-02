@@ -11,7 +11,8 @@
 * New `visualizeKaryotype()` function that colors the branches of a tree by
   chromosome number and prints the numbers next to the species names, and
   new `ancestralStates()` function that reconstructs ancestral values of a
-  species trait by parsimony.
+  species trait by parsimony or by maximum likelihood (with `ape::ace()`,
+  including an ordered model for chromosome numbers).
 * New `cladeBars()` function to mark focal clades with bars next to the tips
   of tree plots instead of boxes behind the branches.
 * `subTree()` now outputs trees with proper `isTip` and `y` columns.

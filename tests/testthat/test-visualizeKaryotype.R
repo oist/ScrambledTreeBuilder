@@ -94,3 +94,12 @@ test_that("visualizeKaryotype() has enough colors for many states", {
   col <- branch_colours(p)[as.character(tree$node[tree$isTip])]
   expect_length(unique(col), 20)
 })
+
+test_that("visualizeKaryotype() passes reconstruction options to ancestralStates()", {
+  tc <- two_clades()
+  taxons <- data.frame(row.names = names(tc$values), ChromNumber = tc$values)
+  p <- visualizeKaryotype(tc$tree, taxons, method = "ML", model = "ordered", threshold = 0.4)
+  expect_true("ChromNumber_prob" %in% names(p$data))
+  root <- p$data$node[p$data$parent == p$data$node]
+  expect_equal(p$data$ChromNumber[p$data$node == root], 21)
+})

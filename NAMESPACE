@@ -31,6 +31,7 @@ export(visualizeKaryotype)
 export(visualizeTree)
 import(S7)
 importFrom(ape,
+  ace,
   as.phylo,
   cophenetic.phylo,
   prop.clades,
@@ -108,6 +109,7 @@ importFrom(stats,
 importFrom(tibble,tibble)
 importFrom(tidyselect,all_of)
 importFrom(tidytree,
+  as.phylo,
   as.treedata,
   as_tibble,
   child,
