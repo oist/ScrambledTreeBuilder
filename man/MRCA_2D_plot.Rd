@@ -46,6 +46,7 @@ MRCA_2D_plot(Halo_DF, Halo_FocalClades) |> plotly::ggplotly(tooltip ="text")
 \code{\link[=averageResults]{averageResults()}}
 
 Other Plotting functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
 \code{\link[=visualizeKaryotype]{visualizeKaryotype()}},

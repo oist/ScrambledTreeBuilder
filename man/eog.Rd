@@ -26,6 +26,7 @@ eog(Halo_Tree, Halo_FocalClades$Haloferax)
 }
 \seealso{
 Other Focal clade functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=focalClade]{focalClade()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
 \code{\link[=recordClades]{recordClades()}},

@@ -47,6 +47,7 @@ Other Functions for trees:
 \code{\link[=recordAncestor]{recordAncestor()}}
 
 Other Focal clade functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=eog]{eog()}},
 \code{\link[=focalClade]{focalClade()}},
 \code{\link[=recordAncestor]{recordAncestor()}},

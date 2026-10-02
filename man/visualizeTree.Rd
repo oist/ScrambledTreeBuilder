@@ -43,6 +43,7 @@ visualizeTree(Halo_Tree, "Scrambling_index") # same
 }
 \seealso{
 Other Focal clade functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=eog]{eog()}},
 \code{\link[=focalClade]{focalClade()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
@@ -52,6 +53,7 @@ Other Focal clade functions:
 
 Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
 \code{\link[=visualizeKaryotype]{visualizeKaryotype()}}

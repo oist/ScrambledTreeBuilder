@@ -30,6 +30,7 @@ Other Functions for trees:
 \code{\link[=subMatrix]{subMatrix()}}
 
 Other Focal clade functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=eog]{eog()}},
 \code{\link[=focalClade]{focalClade()}},
 \code{\link[=recordClades]{recordClades()}},

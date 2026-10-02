@@ -30,6 +30,7 @@ visualizeTree(Halo_Tree) + clades
 }
 \seealso{
 Other Focal clade functions:
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=eog]{eog()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
 \code{\link[=recordClades]{recordClades()}},
