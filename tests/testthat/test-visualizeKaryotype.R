@@ -56,3 +56,41 @@ test_that("visualizeKaryotype() labels ambiguous branches in the legend", {
   scale <- ggplot2::ggplot_build(p)$plot$scales$get_scales("colour")
   expect_equal(scale$get_labels(), c("2", "3", "5", "ambiguous"))
 })
+
+branch_colours <- function(p) setNames(ggplot2::layer_data(p, 1)$colour, p$data$node)
+
+test_that("visualizeKaryotype() draws the most common state in grey", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
+  col <- branch_colours(p)
+  expect_equal(col[["1"]], "grey30")                      # 3, on three tips
+  expect_true(all(col[c("4", "6")] %in% grDevices::palette.colors(palette = "Okabe-Ito")))
+})
+
+test_that("visualizeKaryotype() draws ambiguous branches dashed and light grey", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
+  d <- ggplot2::layer_data(p, 1)
+  ambiguous <- p$data$node %in% c(7, 9)
+  expect_true(all(d$colour[ambiguous] == "grey70"))
+  expect_true(all(d$linetype[ambiguous]  != "solid"))
+  expect_true(all(d$linetype[!ambiguous] == "solid"))
+})
+
+test_that("visualizeKaryotype() background state and colors can be chosen", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), background = 2)
+  col <- branch_colours(p)
+  expect_equal(col[["4"]], "grey30")
+  expect_false(col[["1"]] == "grey30")
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), colors = c(`2` = "red", `3` = "black", `5` = "blue"))
+  col <- branch_colours(p)
+  expect_equal(unname(col[c("1", "4", "6")]), c("black", "red", "blue"))
+})
+
+test_that("visualizeKaryotype() has enough colors for many states", {
+  set.seed(1)
+  m <- matrix(runif(100^2), 100, dimnames = list(paste0("sp", 1:100), paste0("sp", 1:100)))
+  tree <- makeTidyTree((m + t(m)) / 2)
+  taxons <- data.frame(row.names = paste0("sp", 1:100), ChromNumber = rep(1:20, each = 5))
+  p <- visualizeKaryotype(tree, taxons)
+  col <- branch_colours(p)[as.character(tree$node[tree$isTip])]
+  expect_length(unique(col), 20)
+})

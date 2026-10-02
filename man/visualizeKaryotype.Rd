@@ -4,7 +4,14 @@
 \alias{visualizeKaryotype}
 \title{Plot karyotype evolution on a tree}
 \usage{
-visualizeKaryotype(tree, taxons, column = "ChromNumber", offset = 0.05)
+visualizeKaryotype(
+  tree,
+  taxons,
+  column = "ChromNumber",
+  offset = 0.05,
+  background = NULL,
+  colors = NULL
+)
 }
 \arguments{
 \item{tree}{A \code{\link{stbTree}} object.}
@@ -17,6 +24,12 @@ numbers.}
 
 \item{offset}{Space between the tips and the column of numbers, as a
 fraction of the tree's width.}
+
+\item{background}{The chromosome number drawn in grey, so that the other
+numbers stand out.  By default, the most common one among the tips.}
+
+\item{colors}{A vector of colors named after the chromosome numbers, to
+replace the default palette.}
 }
 \value{
 A \code{ggtree} plot, to which focal clades can be added (see
@@ -30,15 +43,21 @@ numbers next to the species names.
 \details{
 The chromosome numbers of internal nodes are reconstructed with
 \code{\link[=ancestralStates]{ancestralStates()}}.  Each branch takes the color of the node it leads to.
-Branches leading to nodes whose state is ambiguous are grey.  Chromosome
-numbers are treated as discrete values, each with its own color.
+Branches leading to nodes whose state is ambiguous are dashed and light
+grey.  Chromosome numbers are treated as discrete values: the most common
+one is dark grey and each of the others has its own color from the
+colorblind-friendly Okabe-Ito palette (or from a larger palette when there
+are more than seven).
+
+To mark focal clades without color clashes, add them as bars with
+\code{\link[=cladeBars]{cladeBars()}}.
 }
 \examples{
 # Pretend chromosome numbers (the real ones are all 1).
 taxons <- data.frame(row.names = Halo_Tree$label[Halo_Tree$isTip],
                      ChromNumber = c(3, 3, 3, 2, 2, 5))
 visualizeKaryotype(Halo_Tree, taxons)
-visualizeKaryotype(Halo_Tree, taxons) + Halo_FocalClades
+visualizeKaryotype(Halo_Tree, taxons) + cladeBars(Halo_FocalClades)
 
 }
 \seealso{
@@ -46,6 +65,7 @@ visualizeKaryotype(Halo_Tree, taxons) + Halo_FocalClades
 
 Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
+\code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
 \code{\link[=visualizeTree]{visualizeTree()}}

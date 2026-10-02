@@ -148,8 +148,10 @@ species, not to pairs of species.  Given a _taxon table_ with one row per
 species, `visualizeKaryotype()` colors the branches of the tree by chromosome
 number, reconstructing the numbers of the ancestors with
 `ancestralStates()`, so that lineages keep the same color until their
-karyotype changes.  Branches where parsimony can not decide between two
-numbers are grey.
+karyotype changes.  The most common number is drawn in grey so that the
+changes stand out, and branches where parsimony can not decide between two
+numbers are dashed.  Focal clades are best added as bars with `cladeBars()`,
+to avoid color clashes with the branches.
 
 The Haloarchaea in this example all have a single chromosome, so let's
 pretend they have more.
@@ -159,7 +161,7 @@ taxons <- data.frame(row.names = c("Halobacterium_litoreum", "Halobacterium_nori
                                    "Halobacterium_salinarum", "Salarchaeum_japonicum",
                                    "Haloferax_mediterranei",  "Haloferax_volcanii"),
                      ChromNumber = c(3, 3, 3, 5, 2, 2))
-visualizeKaryotype(Tibble, taxons) + clades
+visualizeKaryotype(Tibble, taxons) + cladeBars(clades)
 ```
 
 # Heatmaps

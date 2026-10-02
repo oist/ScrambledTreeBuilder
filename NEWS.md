@@ -12,6 +12,8 @@
   chromosome number and prints the numbers next to the species names, and
   new `ancestralStates()` function that reconstructs ancestral values of a
   species trait by parsimony.
+* New `cladeBars()` function to mark focal clades with bars next to the tips
+  of tree plots instead of boxes behind the branches.
 * `subTree()` now outputs trees with proper `isTip` and `y` columns.
 * Fix `MRCAs()` so that it does not output averages values for species in the
   results table but not in the input tree.

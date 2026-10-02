@@ -69,6 +69,7 @@ Collate:
     'averageResults.R'
     'bootstrapTree.R'
     'childSpecies.R'
+    'cladeBars.R'
     'data_model.R'
     'ellipsePlot.R'
     'enr.R'
