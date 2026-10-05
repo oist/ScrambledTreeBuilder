@@ -14,7 +14,7 @@ visualizeKaryotype(
   value = NULL,
   valueround = 2,
   points = FALSE,
-  axis = FALSE,
+  axis = c("number", "percent", "none"),
   ...
 )
 }
@@ -48,8 +48,11 @@ labels, for large trees.}
 \item{axis}{Draw an axis of pairwise distances: for each node, the
 distance between the species on each side of it, assuming the tree
 was built by \code{\link[=makeTidyTree]{makeTidyTree()}} (UPGMA), so that the height of a node
-is half that distance.  The axis has no title: add one with
-\code{\link[ggplot2:xlab]{ggplot2::xlab()}}.}
+is half that distance.  \code{"number"} (default) labels the distances
+as they are, \code{"percent"} multiplies them by 100 and adds a percent
+sign, for distances that are fractions, and \code{"none"} draws no axis.
+Unambiguous abbreviations are accepted.  The axis has no title: add
+one with \code{\link[ggplot2:labs]{ggplot2::labs()}}.}
 
 \item{...}{Options passed to \code{\link[=ancestralStates]{ancestralStates()}} to choose the method of
 reconstruction (\code{method}, \code{model}, \code{threshold}).}
@@ -83,9 +86,9 @@ taxons <- data.frame(row.names = Halo_Tree$label[Halo_Tree$isTip],
 visualizeKaryotype(Halo_Tree, taxons)
 visualizeKaryotype(Halo_Tree, taxons) + cladeBars(Halo_FocalClades)
 
-# Overlay node values, with an axis of the distances used to build the tree.
-visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", axis = TRUE) +
-  ggplot2::xlab("Pairwise percent difference")
+# Overlay node values.  The axis shows the distances used to build the tree.
+visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index") +
+  ggplot2::labs(title = "Scrambling index", x = "Pairwise percent difference")
 
 # Node values have their own colour scale, which can be replaced.
 visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", points = TRUE) +
