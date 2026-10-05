@@ -18,6 +18,8 @@
   the tree, as numbers (default) or percentages (`axis = "percent"`), or not
   (`axis = "none"`).  It can mark nodes with points instead of labels
   (`points = TRUE`), and label nothing with `value = NULL`.
+* New `makeTraitTibble()` function to copy species traits from a taxon
+  table to the tips of a tree, and new `Halo_Taxons` example taxon table.
 * The first argument of `visualizeTree()` is renamed from `your_tibble` to
   `tree`.
 * New `cladeBars()` function to mark focal clades with bars next to the tips

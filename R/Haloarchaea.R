@@ -13,12 +13,16 @@
 #' pairwise nucleotide percent differences, `Halo_Tree` a `tbl_tree` object
 #' computed from this matrix, in which percent difference and scrambling
 #' index averages were projected on the internal nodes representing most
-#' recent common ancestors. Finallly `Halo_FocalClades` is a `FocalCladeList`
-#' object highlighting the `Halobacterium` and `Haloferax` genuses.
+#' recent common ancestors. `Halo_FocalClades` is a `FocalCladeList`
+#' object highlighting the `Halobacterium` and `Haloferax` genuses.  Finally,
+#' `Halo_Taxons` is a taxon table with one row per species and a made-up
+#' `Toy_trait` column of small integers, to illustrate how species traits,
+#' such as chromosome numbers, are plotted with [makeTraitTibble()] and
+#' [visualizeTree()].
 #'
 #' @author Charles Plessy
 #'
-#' @aliases Halo_DF Halo_PercentDiff Halo_FocalClades Halo_Tree
+#' @aliases Halo_DF Halo_PercentDiff Halo_FocalClades Halo_Tree Halo_Taxons
 #'
 #' @family Structural variants
 #' @family Lazy-loaded data
@@ -28,5 +32,6 @@
 #' Halo_PercentDiff
 #' Halo_Tree
 #' Halo_FocalClades
+#' Halo_Taxons
 #'
 NULL

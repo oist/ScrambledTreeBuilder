@@ -7,6 +7,20 @@ test_that("Halo_* objects are consistent with each other", {
   expect_setequal(Halo_Tree$label[Halo_Tree$isTip], halo_species)
   for (cl in Halo_FocalClades)
     expect_true(all(cl@genomeIDs %in% halo_species))
+  expect_equal(rownames(Halo_Taxons), halo_species)
+})
+
+test_that("Halo_Taxons illustrates the features of trait plots", {
+  tree <- makeTraitTibble(Halo_Tree, Halo_Taxons) |> ancestralStates(Halo_Taxons, "Toy_trait")
+  state <- \(a, b) tree$Toy_trait[tree$node == mrca_of(tree, a, b)]
+  # One value per focal clade, with an exception on a terminal branch.
+  expect_equal(state("Halobacterium_litoreum", "Halobacterium_salinarum"), 3)
+  expect_equal(state("Halobacterium_litoreum", "Halobacterium_noricense"), 3)
+  expect_equal(Halo_Taxons["Halobacterium_litoreum", "Toy_trait"], 4)
+  expect_equal(state("Haloferax_mediterranei", "Haloferax_volcanii"), 2)
+  # Ambiguous ancestors.
+  expect_true(is.na(state("Salarchaeum_japonicum", "Halobacterium_salinarum")))
+  expect_true(is.na(state("Salarchaeum_japonicum", "Haloferax_volcanii")))
 })
 
 test_that("oikData tables can be overlaid on MRCA_2D_plot() data", {

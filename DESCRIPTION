@@ -78,6 +78,7 @@ Collate:
     'formatStats.R'
     'makeMatrix.R'
     'makeTidyTree.R'
+    'makeTraitTibble.R'
     'makeValueTibble.R'
     'oikData.R'
     'recordAncestor.R'

@@ -22,3 +22,15 @@ Halo_DF <- recordClades  (Halo_DF, Halo_FocalClades)
 usethis::use_data(Halo_DF, overwrite = TRUE)
 
 usethis::use_data(Halo_FocalClades, overwrite = TRUE)
+
+# A made-up species trait, with small integer values like chromosome numbers
+# (the real ones are all 1), chosen to illustrate visualizeTree(trait = ...):
+# a background value (3), a focal clade with its own value (Haloferax, 2), an
+# exception inside the other focal clade (H. litoreum, 4), and a lineage
+# (Salarchaeum, 5) whose ancestor parsimony can not resolve.
+Halo_Taxons <- data.frame(
+  row.names   = c("Halobacterium_litoreum", "Halobacterium_noricense",
+                  "Halobacterium_salinarum", "Haloferax_mediterranei",
+                  "Haloferax_volcanii", "Salarchaeum_japonicum"),
+  Toy_trait = c(4L, 3L, 3L, 2L, 2L, 5L))
+usethis::use_data(Halo_Taxons, overwrite = TRUE)
