@@ -18,6 +18,7 @@ export(makeTidyTree)
 export(makeTraitTibble)
 export(makeValueTibble)
 export(orderWithTree)
+export(plotSubsample)
 export(recordAncestor)
 export(recordClades)
 export(removeAssemblies)
@@ -26,6 +27,7 @@ export(residualBootstrapTree)
 export(resultFiles)
 export(subMatrix)
 export(subTree)
+export(subsampleSpecies)
 export(thinByMin)
 export(treeHeatMap)
 export(visualizeTree)
@@ -63,8 +65,10 @@ importFrom(ggplot2,
   aes,
   element_line,
   element_text,
+  facet_wrap,
   geom_errorbar,
   geom_errorbarh,
+  geom_histogram,
   geom_label,
   geom_point,
   geom_rect,
@@ -89,6 +93,7 @@ importFrom(ggplot2,
 )
 importFrom(ggtree,
   geom_tiplab,
+  geom_tippoint,
   ggtree
 )
 importFrom(grDevices,hcl.colors)

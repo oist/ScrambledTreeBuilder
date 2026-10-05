@@ -27,6 +27,7 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr,
     missForest,
+    patchwork,
     rmarkdown,
     testthat (>= 3.0.0),
     viridis,
@@ -85,6 +86,7 @@ Collate:
     'removeAssemblies.R'
     'resultFiles.R'
     'subMatrix.R'
+    'subsampleSpecies.R'
     'treeHeatMap.R'
     'visualizeTree.R'
     'zzz.R'

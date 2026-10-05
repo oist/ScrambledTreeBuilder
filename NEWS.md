@@ -20,6 +20,12 @@
   (`points = TRUE`), and label nothing with `value = NULL`.
 * New `makeTraitTibble()` function to copy species traits from a taxon
   table to the tips of a tree, and new `Halo_Taxons` example taxon table.
+* New `subsampleSpecies()` function to choose a subset of species whose
+  most recent common ancestors cover a pairwise distance evenly, with
+  replicates from different clades, to reduce all-versus-all comparisons
+  without losing time points.  The number of species can be fixed, or
+  found from the number of replicates wanted per bin.  New
+  `plotSubsample()` function to report the result.
 * The first argument of `visualizeTree()` is renamed from `your_tibble` to
   `tree`.
 * New `cladeBars()` function to mark focal clades with bars next to the tips
