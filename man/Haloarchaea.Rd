@@ -6,6 +6,7 @@
 \alias{Halo_PercentDiff}
 \alias{Halo_FocalClades}
 \alias{Halo_Tree}
+\alias{Halo_Taxons}
 \title{Example Haloarchaea data objects}
 \format{
 \code{Halo_DF} is a \code{data.frame} containing summary statistics for pairs
@@ -13,8 +14,12 @@ of Haloarchaea genome comparisons, \code{Halo_PercentDiff} is a \code{matrix} of
 pairwise nucleotide percent differences, \code{Halo_Tree} a \code{tbl_tree} object
 computed from this matrix, in which percent difference and scrambling
 index averages were projected on the internal nodes representing most
-recent common ancestors. Finallly \code{Halo_FocalClades} is a \code{FocalCladeList}
-object highlighting the \code{Halobacterium} and \code{Haloferax} genuses.
+recent common ancestors. \code{Halo_FocalClades} is a \code{FocalCladeList}
+object highlighting the \code{Halobacterium} and \code{Haloferax} genuses.  Finally,
+\code{Halo_Taxons} is a taxon table with one row per species and a made-up
+\code{Toy_trait} column of small integers, to illustrate how species traits,
+such as chromosome numbers, are plotted with \code{\link[=makeTraitTibble]{makeTraitTibble()}} and
+\code{\link[=visualizeTree]{visualizeTree()}}.
 }
 \description{
 Concept examples of Haloarchaea comparisons for test and
@@ -29,6 +34,7 @@ Halo_DF
 Halo_PercentDiff
 Halo_Tree
 Halo_FocalClades
+Halo_Taxons
 
 }
 \seealso{
