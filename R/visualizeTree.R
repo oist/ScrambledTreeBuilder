@@ -6,9 +6,9 @@
 #' @section Species traits:
 #' A trait is a value that belongs to each species, not to pairs of species,
 #' for instance a chromosome number.  Store it in a column of the tree, with
-#' values on the tips; values on the internal nodes are ignored.  The values
-#' of the internal nodes are reconstructed with [ancestralStates()], by
-#' parsimony unless another method is chosen with the `...` options.  Each
+#' values on the tips (see [makeTraitTibble()]); values on the internal nodes
+#' are ignored.  The values of the internal nodes are reconstructed with
+#' [ancestralStates()], by parsimony unless another method is chosen with the `...` options.  Each
 #' branch takes the color of the node it leads to, and the tip values are
 #' printed next to the species names.  Branches leading to nodes whose state
 #' is ambiguous are dashed and light grey.  Values are treated as discrete:
@@ -59,7 +59,7 @@
 #'
 #' @family Focal clade functions
 #' @family Plotting functions
-#' @seealso [ancestralStates()]
+#' @seealso [makeTraitTibble()], [ancestralStates()]
 #'
 #' @examples
 #' visualizeTree(Halo_Tree)
@@ -67,16 +67,12 @@
 #' visualizeTree(Halo_Tree, "Scrambling_index") +  # same
 #'   ggplot2::labs(title = "Scrambling index", x = "Pairwise percent difference")
 #'
-#' # Pretend chromosome numbers (the real ones are all 1), stored on the tips.
-#' chr <- c(Halobacterium_litoreum = 3, Halobacterium_noricense = 3,
-#'          Halobacterium_salinarum = 3, Salarchaeum_japonicum  = 5,
-#'          Haloferax_mediterranei  = 2, Haloferax_volcanii     = 2)
-#' tree <- Halo_Tree
-#' tree$ChromNumber <- chr[tree$label]
-#' visualizeTree(tree, value = NULL, trait = "ChromNumber") + cladeBars(Halo_FocalClades)
+#' # Color the branches by a species trait, stored on the tips.
+#' tree <- makeTraitTibble(Halo_Tree, Halo_Taxons)
+#' visualizeTree(tree, value = NULL, trait = "Toy_trait") + cladeBars(Halo_FocalClades)
 #'
 #' # Node values have their own colour scale, which can be replaced.
-#' visualizeTree(tree, "Scrambling_index", trait = "ChromNumber", points = TRUE) +
+#' visualizeTree(tree, "Scrambling_index", trait = "Toy_trait", points = TRUE) +
 #'   ggplot2::scale_colour_viridis_c(name = "Scrambling index", option = "magma")
 #'
 #' @importFrom ggplot2 guides labs

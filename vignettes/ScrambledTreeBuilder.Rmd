@@ -141,55 +141,59 @@ Haloferax <- focalClade(Tibble, "Haloferax_mediterranei", "Haloferax_volcanii", 
 visualizeTree(Tibble) + clades + ggtitle("Focal clade highlight")
 ```
 
-# Karyotype evolution
+# Species traits
 
 Some species traits, such as the number of chromosomes, belong to each
-species, not to pairs of species.  Store them in a column of the tree, on
-its tips (the leaves).  With the `trait` option, `visualizeTree()` colors the
-branches of the tree by that column, reconstructing the numbers of the
-ancestors with `ancestralStates()`, so that lineages keep the same color
-until their karyotype changes.  The most common number is drawn in grey so that the
-changes stand out, and branches where parsimony can not decide between two
-numbers are dashed.  Focal clades are best added as bars with `cladeBars()`,
-to avoid color clashes with the branches.
+species, not to pairs of species.  `makeTraitTibble()` copies them from a
+_taxon table_, with one row per species, to the tips (the leaves) of the
+tree.  With the `trait` option, `visualizeTree()` colors the branches of the
+tree by that column, reconstructing the values of the ancestors with
+`ancestralStates()`, so that lineages keep the same color until the trait
+changes.  The most common value is drawn in grey so that the changes stand
+out, and branches where parsimony can not decide between two values are
+dashed.  Focal clades are best added as bars with `cladeBars()`, to avoid
+color clashes with the branches.
 
-The Haloarchaea in this example all have a single chromosome, so let's
-pretend they have more.  Indexing a named vector by the labels of the tree
-gives `NA` to the internal nodes, which have no label.
+The `Halo_Taxons` example table has a made-up trait, `Toy_trait`, with
+small integer values like chromosome numbers would have (the real
+Haloarchaea in this example have a single chromosome).  In a real analysis,
+read your taxon table from a file with the species names as row names.
 
-```{r karyotype}
-chr <- c(Halobacterium_litoreum = 3, Halobacterium_noricense = 3,
-         Halobacterium_salinarum = 3, Salarchaeum_japonicum  = 5,
-         Haloferax_mediterranei  = 2, Haloferax_volcanii     = 2)
-Tibble$ChromNumber <- chr[Tibble$label]
-visualizeTree(Tibble, value = NULL, trait = "ChromNumber") + cladeBars(clades)
+```{r trait}
+Halo_Taxons
+Tibble <- makeTraitTibble(Tibble, Halo_Taxons)
+visualizeTree(Tibble, value = NULL, trait = "Toy_trait") + cladeBars(clades)
 ```
 
-Parsimony ignores branch lengths and resolves nodes whenever one number
-needs fewer changes.  For a statistical view of the uncertainty, use
-`method = "ML"` to reconstruct ancestral numbers by maximum likelihood with
-`ape::ace()`.  The `"ordered"` model only allows changes by one chromosome
-at a time, as in fusions and fissions.  Nodes whose most likely number has a
-probability below `threshold` are dashed.  With only six species, the
-likelihood is uncertain everywhere, so let's lower the threshold.
+The branch leading to _H. litoreum_ has its own color: parsimony places the
+change from 3 to 4 there, after the split from _H. noricense_.
 
-```{r karyotype_ML}
-visualizeTree(Tibble, value = NULL, trait = "ChromNumber",
+Parsimony ignores branch lengths and resolves nodes whenever one value
+needs fewer changes.  For a statistical view of the uncertainty, use
+`method = "ML"` to reconstruct ancestral values by maximum likelihood with
+`ape::ace()`.  The `"ordered"` model only allows changes by one step at a
+time, as for chromosome numbers changed by fusions and fissions.  Nodes
+whose most likely value has a probability below `threshold` are dashed.
+With only six species, the likelihood is uncertain everywhere, so let's
+lower the threshold.
+
+```{r trait_ML}
+visualizeTree(Tibble, value = NULL, trait = "Toy_trait",
               method = "ML", model = "ordered", threshold = 0.4) +
   cladeBars(clades)
 ```
 
 Values stored on the tree (see `makeValueTibble()` below) can be shown on
 the internal nodes, as labels or, for large trees, as points
-(`points = TRUE`).  They have their own colour scale.  The axis shows the distance that was
-used to build the tree, here the percent difference, between the species on
-each side of a node (use `axis = "percent"` when the distances are fractions,
-and `axis = "none"` to remove it).  The axis has no title: add one with
-`labs()`.
+(`points = TRUE`).  They have their own colour scale.  The axis shows the
+distance that was used to build the tree, here the percent difference,
+between the species on each side of a node (use `axis = "percent"` when the
+distances are fractions, and `axis = "none"` to remove it).  The axis has no
+title: add one with `labs()`.
 
-```{r karyotype_values}
+```{r trait_values}
 makeValueTibble(Tibble, valueMatrix, colname = "Scrambling_index") |>
-  visualizeTree("Scrambling_index", trait = "ChromNumber") +
+  visualizeTree("Scrambling_index", trait = "Toy_trait") +
   cladeBars(clades) +
   labs(title = "Scrambling index", x = "Pairwise percent difference")
 ```
