@@ -12,7 +12,7 @@ CladeBars <- new_class("CladeBars", properties = list(
 #' Mark focal clades with colored vertical bars to the right of the tips of a
 #' tree plot, instead of highlighting them with colored boxes behind the
 #' branches.  This avoids color clashes with plots whose branches are colored,
-#' such as the ones of [visualizeKaryotype()].
+#' such as the ones of [visualizeTree()] with a `trait`.
 #'
 #' The bars are drawn with the `fill` aesthetic, so their legend is separate
 #' from the `colour` legend of the branches.  Nested clades are drawn in
@@ -24,7 +24,7 @@ CladeBars <- new_class("CladeBars", properties = list(
 #' @param width Width of the bars, as a fraction of the tree's width.
 #'
 #' @returns An object to add with `+` to a tree plot made with
-#' [visualizeTree()] or [visualizeKaryotype()].  Clades whose genomes are not
+#' [visualizeTree()].  Clades whose genomes are not
 #' in the plotted tree are skipped.
 #'
 #' @author Claude Opus 5.5 (Anthropic)

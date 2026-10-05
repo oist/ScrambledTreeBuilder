@@ -8,15 +8,18 @@
   Fujita).
 * New `computeENR()` and `cladeENRtable()` functions for detecting outlier
   clades.
-* New `visualizeKaryotype()` function that colors the branches of a tree by
-  chromosome number and prints the numbers next to the species names, and
-  new `ancestralStates()` function that reconstructs ancestral values of a
+* `visualizeTree()` can color the branches of a tree by a species trait
+  stored on its tips, such as the chromosome number (`trait` option), and
+  print the trait values next to the species names.  New
+  `ancestralStates()` function that reconstructs ancestral values of a
   species trait by parsimony or by maximum likelihood (with `ape::ace()`,
   including an ordered model for chromosome numbers).
-* `visualizeKaryotype()` can show values on internal nodes, as labels or
-  points.  An axis shows the pairwise distances used to build the tree, as
-  numbers (default) or percentages (`axis = "percent"`), or not
-  (`axis = "none"`).
+* `visualizeTree()` draws an axis of the pairwise distances used to build
+  the tree, as numbers (default) or percentages (`axis = "percent"`), or not
+  (`axis = "none"`).  It can mark nodes with points instead of labels
+  (`points = TRUE`), and label nothing with `value = NULL`.
+* The first argument of `visualizeTree()` is renamed from `your_tibble` to
+  `tree`.
 * New `cladeBars()` function to mark focal clades with bars next to the tips
   of tree plots instead of boxes behind the branches.
 * `subTree()` now outputs trees with proper `isTip` and `y` columns.

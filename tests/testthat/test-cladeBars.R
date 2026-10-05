@@ -37,7 +37,7 @@ test_that("cladeBars() skips clades absent from the plotted tree", {
 })
 
 test_that("cladeBars() are placed after the karyotype number column", {
-  p <- visualizeKaryotype(Halo_Tree, halo_taxons()) + cladeBars(Halo_FocalClades)
+  p <- visualizeTree(halo_chr_tree(), value = NULL, trait = "ChromNumber") + cladeBars(Halo_FocalClades)
   numbers <- ggplot2::layer_data(p, which(sapply(p$layers, \(l) class(l$geom)[1] == "GeomText")))
   bars <- ggplot2::layer_data(p, bar_layer(p))
   expect_true(all(bars$xmin > max(numbers$x)))

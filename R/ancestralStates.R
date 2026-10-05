@@ -48,7 +48,7 @@
 #' @author Claude Opus 5.5 (Anthropic)
 #'
 #' @family Functions for trees
-#' @seealso [visualizeKaryotype()]
+#' @seealso [visualizeTree()], which plots the reconstruction with `trait`.
 #'
 #' @examples
 #' # Pretend chromosome numbers (the real ones are all 1).

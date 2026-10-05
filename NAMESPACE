@@ -27,7 +27,6 @@ export(subMatrix)
 export(subTree)
 export(thinByMin)
 export(treeHeatMap)
-export(visualizeKaryotype)
 export(visualizeTree)
 import(S7)
 importFrom(ape,
@@ -76,7 +75,6 @@ importFrom(ggplot2,
   position_nudge,
   scale_alpha_identity,
   scale_color_manual,
-  scale_colour_continuous,
   scale_colour_manual,
   scale_fill_manual,
   scale_linetype_manual,

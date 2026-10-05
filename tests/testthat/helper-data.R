@@ -28,6 +28,13 @@ halo_taxons <- function() {
              ChromNumber = c(3, 3, 3, 2, 2, 5))
 }
 
+# Halo_Tree with the pretend chromosome numbers of halo_taxons() on its tips.
+halo_chr_tree <- function() {
+  tree <- Halo_Tree
+  tree$ChromNumber <- halo_taxons()[tree$label, "ChromNumber"]
+  tree
+}
+
 # A four-tip tree ((A,B),(C,D)), built from a distance matrix.
 abcd_tree <- function() {
   m <- matrix(c( 0,  2, 10, 10,
