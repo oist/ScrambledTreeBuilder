@@ -48,6 +48,7 @@ MRCA_2D_plot(Halo_DF, Halo_FocalClades) |> plotly::ggplotly(tooltip ="text")
 Other Plotting functions:
 \code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
+\code{\link[=plotSubsample]{plotSubsample()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
 \code{\link[=visualizeTree]{visualizeTree()}}
 }

@@ -53,7 +53,8 @@ Other Functions for trees:
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
-\code{\link[=subMatrix]{subMatrix()}}
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subsampleSpecies]{subsampleSpecies()}}
 }
 \author{
 Claude Opus 5.5 (Anthropic)

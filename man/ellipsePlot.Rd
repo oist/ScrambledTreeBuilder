@@ -32,6 +32,7 @@ ellipsePlot(Halo_DF |> averageResults())
 Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
 \code{\link[=cladeBars]{cladeBars()}},
+\code{\link[=plotSubsample]{plotSubsample()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
 \code{\link[=visualizeTree]{visualizeTree()}}
 }

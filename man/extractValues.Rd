@@ -31,6 +31,7 @@ Other Functions for trees:
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=makeTraitTibble]{makeTraitTibble()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
-\code{\link[=subMatrix]{subMatrix()}}
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subsampleSpecies]{subsampleSpecies()}}
 }
 \concept{Functions for trees}
