@@ -13,3 +13,5 @@
 ^\.claude$
 ^AGENTS\.md$
 ^CLAUDE\.md$
+^AGENTS-sandbox\.md$
+^.*\.RData$
