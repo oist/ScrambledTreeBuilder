@@ -1,6 +1,6 @@
 #' Plot a phylogenetic tree and its node data
 #'
-#' @param your_tibble A [`stbTree`] object.
+#' @param tree A [`stbTree`] object.
 #' @param value Tibble value to label on internal nodes of the tree, or name
 #'        of a column in the tree object.
 #' @param valueround Number of integers to round value.
@@ -25,13 +25,13 @@
 #' visualizeTree(Halo_Tree, value = Halo_Tree$Scrambling_index)
 #' visualizeTree(Halo_Tree, "Scrambling_index") # same
 
-visualizeTree <- function(your_tibble, value="node", valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0) {
+visualizeTree <- function(tree, value="node", valueround = 2, outerlabelsize = 0.25, innerlabelsize = 3, ynudge = 0, xnudge = 0) {
   noLegend <- FALSE
   if (length(value) == 1 && value == "node") noLegend <- TRUE
   if (length(value) == 1 && is.character(value))
-    value <- your_tibble[ , value, drop = TRUE]
+    value <- tree[ , value, drop = TRUE]
   # Build step by step for better use of suppressMessages
-  gg <- ggtree::ggtree(tidytree::as.treedata(your_tibble))
+  gg <- ggtree::ggtree(tidytree::as.treedata(tree))
   suppressMessages(
     gg <- gg + ggtree::geom_tiplab(as_ylab=TRUE)
   ) # Scale for y is already present.
