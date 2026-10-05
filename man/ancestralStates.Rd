@@ -87,6 +87,7 @@ ancestralStates(Halo_Tree, chr, method = "ML")
 Other Functions for trees:
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
+\code{\link[=makeTraitTibble]{makeTraitTibble()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
 \code{\link[=subMatrix]{subMatrix()}}
 }

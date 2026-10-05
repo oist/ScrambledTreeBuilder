@@ -27,6 +27,7 @@ Other Functions for trees:
 \code{\link[=ancestralStates]{ancestralStates()}},
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
+\code{\link[=makeTraitTibble]{makeTraitTibble()}},
 \code{\link[=subMatrix]{subMatrix()}}
 
 Other Focal clade functions:
