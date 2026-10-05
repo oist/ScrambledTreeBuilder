@@ -14,7 +14,9 @@
   species trait by parsimony or by maximum likelihood (with `ape::ace()`,
   including an ordered model for chromosome numbers).
 * `visualizeKaryotype()` can show values on internal nodes, as labels or
-  points, and an axis of the pairwise distances used to build the tree.
+  points.  An axis shows the pairwise distances used to build the tree, as
+  numbers (default) or percentages (`axis = "percent"`), or not
+  (`axis = "none"`).
 * New `cladeBars()` function to mark focal clades with bars next to the tips
   of tree plots instead of boxes behind the branches.
 * `subTree()` now outputs trees with proper `isTip` and `y` columns.

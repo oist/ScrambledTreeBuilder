@@ -143,7 +143,8 @@ test_that("visualizeKaryotype() draws no node values by default", {
 })
 
 test_that("visualizeKaryotype() axis shows pairwise distances from the tips", {
-  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = TRUE)
+  # Drawn by default.
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
   x <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x
   xmax <- max(p$data$x[p$data$isTip])
   breaks <- x$get_breaks()
@@ -157,8 +158,27 @@ test_that("visualizeKaryotype() axis shows pairwise distances from the tips", {
   expect_s3_class(p$theme$axis.text.x, "ggplot2::element_text")
 })
 
-test_that("visualizeKaryotype() has no axis by default", {
-  p <- visualizeKaryotype(Halo_Tree, halo_taxons())
+test_that("visualizeKaryotype() axis can show distances as percentages", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "percent")
+  q <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "number")
+  xp <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x
+  xq <- ggplot2::ggplot_build(q)$layout$panel_params[[1]]$x
+  expect_equal(xp$get_breaks(), xq$get_breaks())
+  ok <- !is.na(xq$get_breaks())
+  expect_equal(xp$get_labels()[ok], paste0(100 * as.numeric(xq$get_labels()[ok]), "%"))
+})
+
+test_that("visualizeKaryotype() axis argument is partially matched", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "perc")
+  expect_match(ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels(), "%$",
+               all = FALSE)
+  expect_error(visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "yes"), "should be one of")
+  expect_error(visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "n"), "should be one of")
+  expect_error(visualizeKaryotype(Halo_Tree, halo_taxons(), axis = TRUE), "must be NULL or a character vector")
+})
+
+test_that("visualizeKaryotype() axis can be removed", {
+  p <- visualizeKaryotype(Halo_Tree, halo_taxons(), axis = "none")
   expect_s3_class(p$theme$axis.text.x, "ggplot2::element_blank")
 })
 

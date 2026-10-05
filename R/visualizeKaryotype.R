@@ -36,8 +36,11 @@
 #' @param axis Draw an axis of pairwise distances: for each node, the
 #'        distance between the species on each side of it, assuming the tree
 #'        was built by [makeTidyTree()] (UPGMA), so that the height of a node
-#'        is half that distance.  The axis has no title: add one with
-#'        [ggplot2::xlab()].
+#'        is half that distance.  `"number"` (default) labels the distances
+#'        as they are, `"percent"` multiplies them by 100 and adds a percent
+#'        sign, for distances that are fractions, and `"none"` draws no axis.
+#'        Unambiguous abbreviations are accepted.  The axis has no title: add
+#'        one with [ggplot2::labs()].
 #' @param ... Options passed to [ancestralStates()] to choose the method of
 #'        reconstruction (`method`, `model`, `threshold`).
 #'
@@ -56,9 +59,9 @@
 #' visualizeKaryotype(Halo_Tree, taxons)
 #' visualizeKaryotype(Halo_Tree, taxons) + cladeBars(Halo_FocalClades)
 #'
-#' # Overlay node values, with an axis of the distances used to build the tree.
-#' visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", axis = TRUE) +
-#'   ggplot2::xlab("Pairwise percent difference")
+#' # Overlay node values.  The axis shows the distances used to build the tree.
+#' visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index") +
+#'   ggplot2::labs(title = "Scrambling index", x = "Pairwise percent difference")
 #'
 #' # Node values have their own colour scale, which can be replaced.
 #' visualizeKaryotype(Halo_Tree, taxons, value = "Scrambling_index", points = TRUE) +
@@ -76,7 +79,9 @@
 
 visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.05,
                                background = NULL, colors = NULL, value = NULL,
-                               valueround = 2, points = FALSE, axis = FALSE, ...) {
+                               valueround = 2, points = FALSE,
+                               axis = c("number", "percent", "none"), ...) {
+  axis <- match.arg(axis)
   tree <- ancestralStates(tree, taxons, column, ...)
   valueName <- if (length(value) == 1 && is.character(value)) value else "value"
   if (length(value) == 1 && is.character(value))
@@ -120,21 +125,23 @@ visualizeKaryotype <- function(tree, taxons, column = "ChromNumber", offset = 0.
                           valueround = valueround, points = points) +
       scale_colour_continuous(name = valueName)
   }
-  if (isTRUE(axis)) gg <- addPairwiseAxis(gg)
+  if (axis != "none") gg <- addPairwiseAxis(gg, percent = axis == "percent")
   gg
 }
 
 # Add an axis of pairwise distances, increasing from the tips (0) towards the
 # root.  With UPGMA, the height of a node is half the distance between the
-# species on each side of it.
+# species on each side of it.  With percent = TRUE, the distances are
+# fractions to be labelled as percentages.
 #' @importFrom ggplot2 element_line element_text scale_x_continuous theme
 #' @noRd
-addPairwiseAxis <- function(gg) {
+addPairwiseAxis <- function(gg, percent = FALSE) {
   xmax   <- max(gg$data$x[gg$data$isTip])
   breaks <- pretty(c(0, 2 * xmax))
   breaks <- breaks[breaks <= 2 * xmax]
+  labels <- if (percent) paste0(100 * breaks, "%") else breaks
   suppressMessages( # Scale for x is already present.
-    gg + scale_x_continuous(breaks = xmax - breaks / 2, labels = breaks)
+    gg + scale_x_continuous(breaks = xmax - breaks / 2, labels = labels)
   ) + theme(axis.line.x  = element_line(),
             axis.ticks.x = element_line(),
             axis.text.x  = element_text())
