@@ -49,7 +49,6 @@ Other Plotting functions:
 \code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
-\code{\link[=visualizeKaryotype]{visualizeKaryotype()}},
 \code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{

@@ -34,7 +34,6 @@ Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
 \code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
-\code{\link[=visualizeKaryotype]{visualizeKaryotype()}},
 \code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{

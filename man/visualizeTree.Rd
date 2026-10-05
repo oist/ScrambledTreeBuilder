@@ -11,37 +11,107 @@ visualizeTree(
   outerlabelsize = 0.25,
   innerlabelsize = 3,
   ynudge = 0,
-  xnudge = 0
+  xnudge = 0,
+  points = FALSE,
+  trait = NULL,
+  offset = 0.05,
+  background = NULL,
+  colors = NULL,
+  axis = c("number", "percent", "none"),
+  ...
 )
 }
 \arguments{
 \item{tree}{A \code{\link{stbTree}} object.}
 
-\item{value}{Tibble value to label on internal nodes of the tree, or name
-of a column in the tree object.}
+\item{value}{Values to label on internal nodes of the tree, or name of a
+column in the tree object.  By default, the node IDs, without
+legend.  \code{NULL} labels nothing.}
 
-\item{valueround}{Number of integers to round value.}
+\item{valueround}{Number of decimals to round values.}
 
 \item{outerlabelsize}{Size of label border.}
 
-\item{innerlabelsize}{Overall size of label.}
+\item{innerlabelsize}{Overall size of label (or of points).}
 
 \item{xnudge, ynudge}{Adjust horizontal or vertical position of labels
 (useful when plotting multiple labels).}
+
+\item{points}{Mark the nodes with points colored by value instead of
+labels, for large trees.}
+
+\item{trait}{Name of a column of the tree containing a species trait on
+its tips, to color the branches (see below).  By default, no trait
+is shown.}
+
+\item{offset}{Space between the tips and the column of trait values, as a
+fraction of the tree's width.}
+
+\item{background}{The trait value drawn in grey, so that the other values
+stand out.  By default, the most common one among the tips.}
+
+\item{colors}{A vector of colors named after the trait values, to replace
+the default palette.}
+
+\item{axis}{Draw an axis of pairwise distances: for each node, the
+distance between the species on each side of it, assuming the tree
+was built by \code{\link[=makeTidyTree]{makeTidyTree()}} (UPGMA), so that the height of a node
+is half that distance.  \code{"number"} (default) labels the distances
+as they are, \code{"percent"} multiplies them by 100 and adds a percent
+sign, for distances that are fractions, and \code{"none"} draws no axis.
+Unambiguous abbreviations are accepted.  The axis has no title: add
+one with \code{\link[ggplot2:labs]{ggplot2::labs()}}.}
+
+\item{...}{Options passed to \code{\link[=ancestralStates]{ancestralStates()}} to choose the method of
+reconstruction of the \code{trait} (\code{method}, \code{model}, \code{threshold}).}
 }
 \value{
-A phylogenetic tree showcasing phylogeny of species, additional node
-values, or just node IDs.  No legend is show when displaying node IDs.
+A \code{ggtree} plot, to which focal clades can be added (see
+\code{\link[=focalClade]{focalClade()}} and \code{\link[=cladeBars]{cladeBars()}}).
 }
 \description{
-Plot a phylogenetic tree and its node data
+Plot a tree, label its internal nodes with values, and optionally color its
+branches by a species trait such as the number of chromosomes.
 }
+\section{Species traits}{
+
+A trait is a value that belongs to each species, not to pairs of species,
+for instance a chromosome number.  Store it in a column of the tree, with
+values on the tips; values on the internal nodes are ignored.  The values
+of the internal nodes are reconstructed with \code{\link[=ancestralStates]{ancestralStates()}}, by
+parsimony unless another method is chosen with the \code{...} options.  Each
+branch takes the color of the node it leads to, and the tip values are
+printed next to the species names.  Branches leading to nodes whose state
+is ambiguous are dashed and light grey.  Values are treated as discrete:
+the most common one is dark grey and each of the others has its own color
+from the colorblind-friendly Okabe-Ito palette (or from a larger palette
+when there are more than seven).  Node values then have their own color
+scale.  To mark focal clades without color clashes, add them as bars with
+\code{\link[=cladeBars]{cladeBars()}}.
+}
+
 \examples{
 visualizeTree(Halo_Tree)
 visualizeTree(Halo_Tree, value = Halo_Tree$Scrambling_index)
-visualizeTree(Halo_Tree, "Scrambling_index") # same
+visualizeTree(Halo_Tree, "Scrambling_index") +  # same
+  ggplot2::labs(title = "Scrambling index", x = "Pairwise percent difference")
+
+# Pretend chromosome numbers (the real ones are all 1), stored on the tips.
+chr <- c(Halobacterium_litoreum = 3, Halobacterium_noricense = 3,
+         Halobacterium_salinarum = 3, Salarchaeum_japonicum  = 5,
+         Haloferax_mediterranei  = 2, Haloferax_volcanii     = 2)
+tree <- Halo_Tree
+tree$ChromNumber <- chr[tree$label]
+visualizeTree(tree, value = NULL, trait = "ChromNumber") + cladeBars(Halo_FocalClades)
+
+# Node values have their own colour scale, which can be replaced.
+visualizeTree(tree, "Scrambling_index", trait = "ChromNumber", points = TRUE) +
+  ggplot2::scale_colour_viridis_c(name = "Scrambling index", option = "magma")
+
 }
 \seealso{
+\code{\link[=ancestralStates]{ancestralStates()}}
+
 Other Focal clade functions:
 \code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=eog]{eog()}},
@@ -55,8 +125,7 @@ Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
 \code{\link[=cladeBars]{cladeBars()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
-\code{\link[=treeHeatMap]{treeHeatMap()}},
-\code{\link[=visualizeKaryotype]{visualizeKaryotype()}}
+\code{\link[=treeHeatMap]{treeHeatMap()}}
 }
 \author{
 Noa Brenner

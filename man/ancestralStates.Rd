@@ -82,7 +82,7 @@ ancestralStates(Halo_Tree, chr, method = "ML")
 
 }
 \seealso{
-\code{\link[=visualizeKaryotype]{visualizeKaryotype()}}
+\code{\link[=visualizeTree]{visualizeTree()}}, which plots the reconstruction with \code{trait}.
 
 Other Functions for trees:
 \code{\link[=childSpecies]{childSpecies()}},

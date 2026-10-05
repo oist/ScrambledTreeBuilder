@@ -16,14 +16,14 @@ tree's width.}
 }
 \value{
 An object to add with \code{+} to a tree plot made with
-\code{\link[=visualizeTree]{visualizeTree()}} or \code{\link[=visualizeKaryotype]{visualizeKaryotype()}}.  Clades whose genomes are not
+\code{\link[=visualizeTree]{visualizeTree()}}.  Clades whose genomes are not
 in the plotted tree are skipped.
 }
 \description{
 Mark focal clades with colored vertical bars to the right of the tips of a
 tree plot, instead of highlighting them with colored boxes behind the
 branches.  This avoids color clashes with plots whose branches are colored,
-such as the ones of \code{\link[=visualizeKaryotype]{visualizeKaryotype()}}.
+such as the ones of \code{\link[=visualizeTree]{visualizeTree()}} with a \code{trait}.
 }
 \details{
 The bars are drawn with the \code{fill} aesthetic, so their legend is separate
@@ -48,7 +48,6 @@ Other Plotting functions:
 \code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
 \code{\link[=ellipsePlot]{ellipsePlot()}},
 \code{\link[=treeHeatMap]{treeHeatMap()}},
-\code{\link[=visualizeKaryotype]{visualizeKaryotype()}},
 \code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
