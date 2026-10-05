@@ -112,3 +112,24 @@ test pass.  Never write a test that asserts the buggy behaviour.
   function.
 - Commit messages: a short summary line, then a body explaining why when it
   is not obvious.
+
+## Project direction
+
+- Goal: test whether genome scrambling (strand discordance and
+  randomisation indices) accumulates with evolutionary time, using
+  pairwise percent difference as the clock, and find lineages that depart
+  from the common trend (`MRCA_2D_plot()`, `computeENR()`).
+- All-versus-all comparisons grow quadratically, so large clades
+  (Ovalentaria, Eupercaria, other Neoteleostei) are computed separately,
+  thinned with `subsampleSpecies()`, and the subsets combined in a new
+  all-versus-all to reach the depths where the index may saturate.
+- Likely next steps: analyse the combined run, model the saturation of
+  the index, compare clades against the trend, and relate species traits
+  (`makeTraitTibble()`, `visualizeTree(trait = )`) to scrambling.
+
+## Real data
+
+Analysis objects (`*.RData` in the package root, such as
+`Ovalentaria.RData`) are not in git and can be large.  When a task needs
+real data, ask the user for them; never commit them.  If R packages are
+missing or you run in a sandbox, read `AGENTS-sandbox.md`.
