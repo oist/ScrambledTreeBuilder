@@ -16,16 +16,20 @@ NULL
 #' average pairwise distance between the species on each side of the node,
 #' see [makeValueTibble()]) are cut in bins, and each bin gets a target
 #' number of nodes: as equal as possible, but not more than the number of
-#' nodes available in the bin.
+#' nodes available in the bin, and not less than the number of nodes that
+#' the species to `keep` already impose.
 #'
 #' The subset starts with one species on each side of the root (or with the
 #' species to `keep`), so that the deepest node is kept.  Species are then
 #' added one by one, each time choosing the one whose new node falls in the
 #' bin furthest below its target and, among these, in the focal clade least
 #' represented in that bin, so that the replicates of a bin come from
-#' independent lineages.  Finally, random swaps between kept and discarded
-#' species are accepted when they reduce the shortfall to the targets, or the
-#' number of nodes from the same clade in the same bin.
+#' independent lineages.  Looking one step ahead, a species also scores for
+#' the nodes that it brings within one species of being kept, so that
+#' lineages without kept species can be entered.  Finally, random swaps
+#' between kept and discarded species are accepted when they reduce the
+#' shortfall to the targets, or the number of nodes from the same clade in
+#' the same bin.
 #'
 #' The search is heuristic and uses random numbers: call [set.seed()] for
 #' reproducible results.
@@ -34,7 +38,8 @@ NULL
 #' With `n`, the number of species is fixed and the `n - 1` nodes are spread
 #' over the bins.  With `replicates`, the target of each bin is that number
 #' of nodes (or all the nodes of the bin if it has fewer), and the number of
-#' species is increased one by one until every target is met.  This lets the
+#' species is increased one by one until every target is met, and then the
+#' species that are not needed to meet the targets are removed.  This lets the
 #' shape of the tree decide how many species are needed: a bin whose nodes
 #' are nested in each other costs more species than a bin whose nodes are in
 #' separate lineages.
@@ -87,6 +92,7 @@ subsampleSpecies <- function(tree, value, n = NULL, replicates = NULL, breaks = 
     value <- tree[[value]]
   }
   s <- subsampleSetup(tree, value, breaks, clades)
+  keep <- unique(keep)
   nTips <- length(s$tips)
   if (!is.null(n) && (n < 2 || n > nTips))
     stop("n must be between 2 and ", nTips, ".")
@@ -98,17 +104,20 @@ subsampleSpecies <- function(tree, value, n = NULL, replicates = NULL, breaks = 
 
   kept <- startingSpecies(s, keep)
   if (!is.null(n)) {
-    target <- waterFill(s$available, n - 1)
+    # The nodes of the species to keep count in the targets.
+    forced <- table(s$bins[match(keptNodes(s, keep), s$inner)])
+    target <- waterFill(s$available, n - 1, floor = forced)
     kept <- growSubsample(s, kept, max(n, length(kept)), target)
     kept <- swapSubsample(s, kept, keep, target, swaps)
   } else {
+    # Grow until the targets are met, without swaps that could undo the
+    # look-ahead, then remove the species that are not needed, then swap.
     target <- pmin(s$available, replicates)
     kept <- growSubsample(s, kept, max(sum(target) + 1, length(kept)), target)
-    kept <- swapSubsample(s, kept, keep, target, swaps)
-    while (sum(shortfall(s, kept, target)) > 0 && length(kept) < nTips) {
+    while (sum(shortfall(s, kept, target)) > 0 && length(kept) < nTips)
       kept <- growSubsample(s, kept, length(kept) + 1, target)
-      kept <- swapSubsample(s, kept, keep, target, swaps)
-    }
+    kept <- pruneSubsample(s, kept, keep, target)
+    kept <- swapSubsample(s, kept, keep, target, swaps)
   }
   nodes <- keptNodes(s, kept)
   report <- data.frame(bin       = levels(s$bins),
@@ -169,12 +178,13 @@ subsampleSetup <- function(tree, value, breaks, clades) {
 }
 
 # Spread a number of nodes over the bins as evenly as possible, without
-# exceeding the number of nodes available in each bin.  When fewer nodes are
-# left than open bins, they go to bins spread evenly from the deepest one, to
-# keep the span of the values.
-waterFill <- function(available, total) {
-  target <- available * 0
-  left <- total
+# exceeding the number of nodes available in each bin, and starting from a
+# floor (nodes already imposed).  When fewer nodes are left than open bins,
+# they go to bins spread evenly from the deepest one, to keep the span of the
+# values.
+waterFill <- function(available, total, floor = 0) {
+  target <- available * 0 + pmin(floor, available)
+  left <- total - sum(target)
   while (left > 0) {
     room <- available - target
     open <- which(room > 0)
@@ -219,6 +229,8 @@ subsampleObjective <- function(s, kept, target) {
 # bins below target.  Looking one step ahead, a species also scores for the
 # nodes between it and its join node: they need only one more species to be
 # kept, which matters for nodes in lineages that have no kept species yet.
+# Adding a node to a bin already over target is penalised only mildly, so
+# that it does not cancel this look-ahead.
 growSubsample <- function(s, kept, n, target) {
   ancestorNode <- match(colnames(s$M), s$inner)
   while (length(kept) < n) {
@@ -234,10 +246,30 @@ growSubsample <- function(s, kept, n, target) {
     nodeDeficit <- rep(binDeficit[s$bins[ancestorNode]], each = length(cand))
     ahead   <- apply(ifelse(below, nodeDeficit, 0), 1, max)
     sameClade <- sapply(joins, \(j) sum(s$bins[i] == s$bins[j] & s$nodeClade[i] == s$nodeClade[j]))
-    score   <- 100 * deficit + 50 * pmax(ahead, 0) - sameClade + stats::runif(length(cand), 0, 0.1)
+    score   <- 100 * pmax(deficit, 0) + 10 * pmin(deficit, 0) + 50 * pmax(ahead, 0) -
+               sameClade + stats::runif(length(cand), 0, 0.1)
     kept    <- c(kept, cand[which.max(score)])
   }
   kept
+}
+
+# Remove species, one at a time in random order, as long as no bin falls
+# short of its target.
+pruneSubsample <- function(s, kept, keep, target) {
+  short <- sum(shortfall(s, kept, target))
+  repeat {
+    free <- which(!kept %in% keep)
+    removed <- FALSE
+    for (i in free[sample.int(length(free))]) {
+      if (length(kept) <= 2) return(kept)
+      if (sum(shortfall(s, kept[-i], target)) <= short) {
+        kept <- kept[-i]
+        removed <- TRUE
+        break
+      }
+    }
+    if (!removed) return(kept)
+  }
 }
 
 # Swap kept and discarded species while it improves the objective, in passes
@@ -248,7 +280,8 @@ swapSubsample <- function(s, kept, keep, target, swaps) {
   evals <- 0
   repeat {
     improved <- FALSE
-    for (i in sample(which(!kept %in% keep))) {
+    free <- which(!kept %in% keep)
+    for (i in free[sample.int(length(free))]) {
       for (sp in sample(setdiff(s$tips, kept))) {
         evals <- evals + 1
         if (evals > swaps) return(kept)

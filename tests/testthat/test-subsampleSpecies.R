@@ -98,6 +98,71 @@ test_that("waterFill() spreads nodes evenly and keeps the span", {
   expect_equal(ScrambledTreeBuilder:::waterFill(available, 2),  c(1, 0, 0, 0, 1))
 })
 
+test_that("waterFill() starts from a floor", {
+  available <- c(10, 1, 10, 2, 1)
+  expect_equal(ScrambledTreeBuilder:::waterFill(available, 9, floor = c(0, 0, 0, 0, 1)), c(2, 1, 3, 2, 1))
+  expect_equal(ScrambledTreeBuilder:::waterFill(available, 9, floor = c(0, 0, 0, 2, 1)), c(2, 1, 3, 2, 1))
+  expect_equal(ScrambledTreeBuilder:::waterFill(available, 3, floor = c(0, 0, 0, 2, 1)), c(0, 0, 0, 2, 1))
+})
+
+test_that("subsampleSpecies() reaches empty lineages behind an overfilled bin", {
+  # Clades A and B have nodes at 1, 2 and 3, clade W at 2, 3 and 4.  Deep
+  # nodes: X-Y at 6, W at 8, Z at 9, A-B at 10 and the root at 12.  The
+  # species kept fill the deep bin over target, and the shallowest bin can
+  # only be completed with two species of B, whose join node is deep.
+  # Species of W add nodes to bins already at target.
+  cat4 <- \(h) { m <- matrix(h[3], 4, 4); m[1:3, 1:3] <- h[2]; m[1:2, 1:2] <- h[1]; diag(m) <- 0; m }
+  sp <- c(paste0("A", 1:4), paste0("B", 1:4), paste0("W", 1:4), "X", "Y", "Z")
+  D <- matrix(12, 15, 15, dimnames = list(sp, sp))
+  D[1:8, 1:8] <- 10
+  D[1:4, 1:4] <- cat4(1:3)
+  D[5:8, 5:8] <- cat4(1:3)
+  D[9:15, 9:15] <- 9
+  D[9:14, 9:14] <- 8
+  D[9:12, 9:12] <- cat4(2:4)
+  D[13:14, 13:14] <- matrix(c(0, 6, 6, 0), 2)
+  diag(D) <- 0
+  tree <- makeTidyTree(D) |> makeValueTibble(D, colname = "d")
+  for (seed in 1:5) {
+    set.seed(seed)
+    s <- subsampleSpecies(tree, "d", replicates = 2, breaks = c(0, 1.5, 5, 12),
+                          keep = c(paste0("A", 1:4), "W1", "X", "Y", "Z"))
+    expect_equal(s@report$kept[1], 2)
+    expect_length(s@species, 10)
+  }
+})
+
+test_that("subsampleSpecies() counts the nodes of kept species in the targets", {
+  tree <- coal_tree()
+  set.seed(2)
+  keep <- sample(tree$label[tree$isTip], 6)
+  for (seed in 1:3) {
+    set.seed(seed)
+    s <- subsampleSpecies(tree, "d", n = 14, breaks = 4, keep = keep)
+    expect_equal(sum(pmax(s@report$target - s@report$kept, 0)), 0)
+    expect_true(all(keep %in% s@species))
+  }
+})
+
+test_that("subsampleSpecies() keeps them when only one species is free", {
+  # sample(x) on a single number x permutes 1:x.
+  tree <- coal_tree()
+  for (seed in 1:5) {
+    set.seed(seed)
+    keep <- sample(tree$label[tree$isTip], 5)
+    expect_true(all(keep %in% subsampleSpecies(tree, "d", n = 6, keep = keep)@species))
+  }
+})
+
+test_that("subsampleSpecies() ignores duplicates in the species to keep", {
+  tree <- coal_tree()
+  set.seed(1)
+  s <- subsampleSpecies(tree, "d", n = 8, keep = c("sp1", "sp2", "sp1"))
+  expect_length(s@species, 8)
+  expect_false(anyDuplicated(s@species) > 0)
+  expect_length(s@nodes, 7)
+})
+
 test_that("subsampleSpecies() keeps the species it is asked to keep", {
   tree <- coal_tree()
   set.seed(1)
