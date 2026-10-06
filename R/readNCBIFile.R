@@ -13,7 +13,10 @@
 #' @export
 #'
 getNCBIinfo <- function(node_label, tree, ncbi_df) {
-  ncbi_df[paste(gsub(" ", "_", ncbi_df$Organism.Name), ncbi_df$Assembly.Accession, sep = "_") == node_label,]
+  # Replace "/"" by "":
+  # In the tree label: Neisseria_meningitidis_H4476_GCA_000191445.1
+  # However, in the NCBI file: Neisseria meningitidis H44/76    GCA_000191445.1
+  ncbi_df[paste(gsub("/", "", gsub(" ", "_", ncbi_df$Organism.Name)), ncbi_df$Assembly.Accession, sep = "_") == node_label,]
 }
 
 
