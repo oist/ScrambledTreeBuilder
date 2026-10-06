@@ -61,16 +61,20 @@ it joins the species already kept.  The node values (for instance the
 average pairwise distance between the species on each side of the node,
 see \code{\link[=makeValueTibble]{makeValueTibble()}}) are cut in bins, and each bin gets a target
 number of nodes: as equal as possible, but not more than the number of
-nodes available in the bin.
+nodes available in the bin, and not less than the number of nodes that
+the species to \code{keep} already impose.
 
 The subset starts with one species on each side of the root (or with the
 species to \code{keep}), so that the deepest node is kept.  Species are then
 added one by one, each time choosing the one whose new node falls in the
 bin furthest below its target and, among these, in the focal clade least
 represented in that bin, so that the replicates of a bin come from
-independent lineages.  Finally, random swaps between kept and discarded
-species are accepted when they reduce the shortfall to the targets, or the
-number of nodes from the same clade in the same bin.
+independent lineages.  Looking one step ahead, a species also scores for
+the nodes that it brings within one species of being kept, so that
+lineages without kept species can be entered.  Finally, random swaps
+between kept and discarded species are accepted when they reduce the
+shortfall to the targets, or the number of nodes from the same clade in
+the same bin.
 
 The search is heuristic and uses random numbers: call \code{\link[=set.seed]{set.seed()}} for
 reproducible results.
@@ -81,7 +85,8 @@ reproducible results.
 With \code{n}, the number of species is fixed and the \code{n - 1} nodes are spread
 over the bins.  With \code{replicates}, the target of each bin is that number
 of nodes (or all the nodes of the bin if it has fewer), and the number of
-species is increased one by one until every target is met.  This lets the
+species is increased one by one until every target is met, and then the
+species that are not needed to meet the targets are removed.  This lets the
 shape of the tree decide how many species are needed: a bin whose nodes
 are nested in each other costs more species than a bin whose nodes are in
 separate lineages.
@@ -106,6 +111,7 @@ Other Functions for trees:
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=makeTraitTibble]{makeTraitTibble()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=salvageSpecies]{salvageSpecies()}},
 \code{\link[=subMatrix]{subMatrix()}}
 }
 \author{
