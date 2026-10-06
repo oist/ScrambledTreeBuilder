@@ -25,7 +25,10 @@
   replicates from different clades, to reduce all-versus-all comparisons
   without losing time points.  The number of species can be fixed, or
   found from the number of replicates wanted per bin.  New
-  `plotSubsample()` function to report the result.
+  `plotSubsample()` function to report the result, and new
+  `salvageSpecies()` function to find the species to keep because their
+  position in the tree is uncertain (long terminal branches, sides of weakly
+  supported deep nodes).
 * The first argument of `visualizeTree()` is renamed from `your_tibble` to
   `tree`.
 * New `cladeBars()` function to mark focal clades with bars next to the tips

@@ -85,6 +85,7 @@ Collate:
     'recordAncestor.R'
     'removeAssemblies.R'
     'resultFiles.R'
+    'salvageSpecies.R'
     'subMatrix.R'
     'subsampleSpecies.R'
     'treeHeatMap.R'
