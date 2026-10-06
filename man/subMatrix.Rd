@@ -46,6 +46,7 @@ Other Functions for trees:
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=makeTraitTibble]{makeTraitTibble()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=salvageSpecies]{salvageSpecies()}},
 \code{\link[=subsampleSpecies]{subsampleSpecies()}}
 
 Other Focal clade functions:

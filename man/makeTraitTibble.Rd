@@ -53,6 +53,7 @@ Other Functions for trees:
 \code{\link[=childSpecies]{childSpecies()}},
 \code{\link[=extractValues]{extractValues()}},
 \code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=salvageSpecies]{salvageSpecies()}},
 \code{\link[=subMatrix]{subMatrix()}},
 \code{\link[=subsampleSpecies]{subsampleSpecies()}}
 }
