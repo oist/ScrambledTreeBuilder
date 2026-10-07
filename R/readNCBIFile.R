@@ -13,12 +13,17 @@
 #' @export
 #'
 getNCBIinfo <- function(node_label, tree, ncbi_df) {
-  # Replace "/"" by "":
-  # In the tree label: Neisseria_meningitidis_H4476_GCA_000191445.1
-  # However, in the NCBI file: Neisseria meningitidis H44/76    GCA_000191445.1
-  ncbi_df[paste(gsub("/", "", gsub(" ", "_", ncbi_df$Organism.Name)), ncbi_df$Assembly.Accession, sep = "_") == node_label,]
+  # Remove every character that is not a letter, digit, +, ., _, or -. 
+  # This removes characters such as :, /, and parentheses.
+  # It *must* follow the same rules of `SAFEID`, defined in `makeMetadataTable.sh`
+  # Examples:
+  # Tree label <--> NCBI file
+  # Neisseria_meningitidis_H4476_GCA_000191445.1 <--> Neisseria meningitidis H44/76    GCA_000191445.1
+  # Buchnera_aphidicola_Acyrthosiphon_caraganae_GCA_026684235.1 <--> Buchnera aphidicola (Acyrthosiphon caraganae)
+  # Deinococcus_radiodurans_R1__ATCC_13939__DSM_20539_GCA_001638825.1 <--> GCA_001638825.1 ASM163882v1 Deinococcus radiodurans R1 = ATCC 13939 = DSM 20539
+  safe_id <- gsub("[^[:alnum:]+._-]","", gsub(" ", "_", ncbi_df$Organism.Name))
+  ncbi_df[paste(safe_id, ncbi_df$Assembly.Accession, sep = "_") == node_label,]
 }
-
 
 #' Adds NCBI info to the tree
 #'
@@ -45,7 +50,7 @@ readNCBIfile <- function(tree, ncbi_file) {
   if (!file.exists(ncbi_file)) {
     stop(paste("File does not exist: ", ncbi_file))
   }
-  ncbi_df <- read.table(file=ncbi_file, sep='\t', header=TRUE)
+  ncbi_df <- read.table(file=ncbi_file, sep='\t', quote="", comment.char="", header=TRUE)
   # Columns to be added for every node in the tree.
   desired_columns <- list(list(ncbi_name="Organism.Taxonomic.ID",                       tree_name="NCBI_id"),
                           list(ncbi_name="Assembly.Stats.Total.Number.of.Chromosomes",  tree_name="NCBI_nbchr"),
