@@ -41,7 +41,7 @@ getTimeline <- function(taxId, divergenceTimeType="adjusted_age", timetreeBaseTi
   lines  <- content(timetreeResponse, as="text", encoding="UTF-8")
   header <- scan(text=lines, what="", sep=",", nlines=1, quiet=TRUE) # First line: header; Other lines: data.
   # Check if the request returned something valid.
-  if(length(header) < 8){return(NA)}
+  if(length(header) < 8) return(NA)
   # Parse request.
   df    <- read.csv(text=lines)
   # In TimeTree there are two possibilities for the divergence time (here we go with "adjusted age" as default):
@@ -88,7 +88,7 @@ getDivergenceTime <- function(taxId1, taxId2, timetreeBasePairwise="http://timet
   # Break the line into data.
   data <- strsplit(lineData, ",", fixed = TRUE)[[1]]
   # Check if the request returned something valid.
-  if(length(data) < 8){return(NA)}
+  if(length(data) < 8) return(NA)
   # Get data from request.
   list(divtime=as.numeric(data[6]),divtimeCI_low=as.numeric(data[7]),divtimeCI_high=as.numeric(data[8]))
 }
