@@ -4,10 +4,23 @@
 \alias{getTimeline}
 \title{Timeline - TimeTree}
 \usage{
-getTimeline(taxid)
+getTimeline(
+  taxId,
+  divergenceTimeType = "adjusted_age",
+  timetreeBaseTimeline = "http://timetree.temple.edu/api/timeline/"
+)
 }
 \arguments{
-\item{taxid}{An integer: The NCBI id of a taxon}
+\item{taxId}{An integer: The NCBI id of a taxon}
+
+\item{divergenceTimeType}{Optional parameter specifying which type of divergence time to read from TimeTree.
+Two types are available; the default is \code{adjusted_age}:
+\enumerate{
+\item \code{summary_age}: the median divergence time across all studies from TimeTree;
+\item \code{adjusted_age}: a time adjusted when a node is older than its parent in the global timetree reconstructed from individual timetrees.
+}}
+
+\item{timetreeBaseTimeline}{Optional parameter specifying the base URL for retrieving timelines from the TimeTree API.}
 }
 \value{
 A dataframe in which each row corresponds to an ancestor.

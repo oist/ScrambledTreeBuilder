@@ -4,12 +4,18 @@
 \alias{getDivergenceTime}
 \title{Divergence time - TimeTree}
 \usage{
-getDivergenceTime(taxid1, taxid2)
+getDivergenceTime(
+  taxId1,
+  taxId2,
+  timetreeBasePairwise = "http://timetree.temple.edu/api/pairwise/"
+)
 }
 \arguments{
-\item{taxid1}{An integer: The NCBI id of one taxon}
+\item{taxId1}{An integer: The NCBI id of one taxon}
 
-\item{taxid2}{An integer: The NCBI id of the other taxon}
+\item{taxId2}{An integer: The NCBI id of the other taxon}
+
+\item{timetreeBasePairwise}{Optional parameter specifying the base URL for retrieving divergence times between pairs of species from the TimeTree API.}
 }
 \value{
 A list in which the first item is the divergence time (\code{divtime}),
