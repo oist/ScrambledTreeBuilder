@@ -60,6 +60,7 @@ Collate:
     'makeTidyTree.R'
     'makeValueTibble.R'
     'oikData.R'
+    'readNCBIFile.R'
     'recordAncestor.R'
     'removeAssemblies.R'
     'resultFiles.R'
