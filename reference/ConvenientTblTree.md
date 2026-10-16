@@ -8,10 +8,6 @@ Wrapper S7 class for the `tbl_tree` class of the `tidytree` package.
 ConvenientTblTree
 ```
 
-## Format
-
-An object of class `S7_S3_class` of length 3.
-
 ## Details
 
 *Convenient tbl_tree* objects are typically constructed with the

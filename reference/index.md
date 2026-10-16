@@ -50,6 +50,12 @@
 - [`formatStats()`](https://brennern.github.io/ScrambledTreeBuilder/reference/formatStats.md)
   : Consolidate YAML reports in one data frame
 
+- [`getDivergenceTime()`](https://brennern.github.io/ScrambledTreeBuilder/reference/getDivergenceTime.md)
+  : Divergence time - TimeTree
+
+- [`getTimeline()`](https://brennern.github.io/ScrambledTreeBuilder/reference/getTimeline.md)
+  : Timeline - TimeTree
+
 - [`makeItConvenient()`](https://brennern.github.io/ScrambledTreeBuilder/reference/makeItConvenient.md)
   : Add needed columns to be convenient
 
