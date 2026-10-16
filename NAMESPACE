@@ -12,6 +12,8 @@ export(eog)
 export(extractValues)
 export(focalClade)
 export(formatStats)
+export(getDivergenceTime)
+export(getTimeline)
 export(makeMatrix)
 export(makeTidyTree)
 export(makeValueTibble)
@@ -28,54 +30,73 @@ export(thinByMin)
 export(treeHeatMap)
 export(visualizeTree)
 import(S7)
-importFrom(ape,as.phylo)
-importFrom(ape,cophenetic.phylo)
-importFrom(ape,prop.clades)
-importFrom(ape,prop.part)
-importFrom(dplyr,across)
-importFrom(dplyr,arrange)
-importFrom(dplyr,case_when)
-importFrom(dplyr,desc)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,pull)
-importFrom(dplyr,summarise)
-importFrom(dplyr,summarize)
-importFrom(dplyr,sym)
-importFrom(dplyr,ungroup)
-importFrom(dplyr,where)
+importFrom(ape,
+  as.phylo,
+  cophenetic.phylo,
+  prop.clades,
+  prop.part
+)
+importFrom(dplyr,
+  across,
+  arrange,
+  case_when,
+  desc,
+  filter,
+  group_by,
+  mutate,
+  n,
+  pull,
+  summarise,
+  summarize,
+  sym,
+  ungroup,
+  where
+)
 importFrom(ggforce,geom_mark_ellipse)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,geom_errorbar)
-importFrom(ggplot2,geom_errorbarh)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_color_manual)
-importFrom(ggplot2,scale_fill_manual)
-importFrom(ggplot2,scale_x_continuous)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(ggplot2,theme_bw)
-importFrom(ggplot2,theme_minimal)
+importFrom(ggplot2,
+  aes,
+  geom_errorbar,
+  geom_errorbarh,
+  geom_point,
+  ggplot,
+  labs,
+  scale_color_manual,
+  scale_fill_manual,
+  scale_x_continuous,
+  scale_y_continuous,
+  theme_bw,
+  theme_minimal
+)
+importFrom(httr,
+  GET,
+  content
+)
 importFrom(pheatmap,pheatmap)
 importFrom(rlang,.data)
-importFrom(stats,as.dist)
-importFrom(stats,complete.cases)
-importFrom(stats,hclust)
-importFrom(stats,loess)
-importFrom(stats,mad)
-importFrom(stats,na.omit)
-importFrom(stats,predict)
-importFrom(stats,quantile)
-importFrom(stats,sd)
-importFrom(tidytree,as.treedata)
-importFrom(tidytree,as_tibble)
-importFrom(tidytree,child)
-importFrom(tidytree,offspring)
-importFrom(tidytree,tree_subset)
+importFrom(stats,
+  as.dist,
+  complete.cases,
+  hclust,
+  loess,
+  mad,
+  na.omit,
+  predict,
+  quantile,
+  sd
+)
+importFrom(tidytree,
+  as.treedata,
+  as_tibble,
+  child,
+  offspring,
+  tree_subset
+)
 importFrom(treeio,MRCA)
-importFrom(utils,read.delim)
-importFrom(yaml,read_yaml)
-importFrom(yaml,yaml.load)
+importFrom(utils,
+  read.csv,
+  read.delim
+)
+importFrom(yaml,
+  read_yaml,
+  yaml.load
+)

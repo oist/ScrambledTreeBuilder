@@ -29,13 +29,13 @@ Clades of interest to be plotted in color
 visualizeTree(Halo_Tree) + clades
 }
 \seealso{
-Other Focal clade functions: 
-\code{\link{eog}()},
-\code{\link{recordAncestor}()},
-\code{\link{recordClades}()},
-\code{\link{subMatrix}()},
-\code{\link{subTree}()},
-\code{\link{visualizeTree}()}
+Other Focal clade functions:
+\code{\link[=eog]{eog()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=recordClades]{recordClades()}},
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subTree]{subTree()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy

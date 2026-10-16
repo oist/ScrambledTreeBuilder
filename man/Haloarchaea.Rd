@@ -32,7 +32,7 @@ Halo_FocalClades
 
 }
 \seealso{
-Other Lazy-loaded data: 
+Other Lazy-loaded data:
 \code{\link{oikData}}
 }
 \author{

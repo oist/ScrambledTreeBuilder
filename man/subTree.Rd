@@ -30,13 +30,13 @@ visualizeTree(subtree, subtree$node.orig)
 
 }
 \seealso{
-Other Focal clade functions: 
-\code{\link{eog}()},
-\code{\link{focalClade}()},
-\code{\link{recordAncestor}()},
-\code{\link{recordClades}()},
-\code{\link{subMatrix}()},
-\code{\link{visualizeTree}()}
+Other Focal clade functions:
+\code{\link[=eog]{eog()}},
+\code{\link[=focalClade]{focalClade()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=recordClades]{recordClades()}},
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy

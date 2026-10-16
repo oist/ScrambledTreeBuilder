@@ -22,10 +22,10 @@ childSpecies(Halo_Tree, 7)
 
 }
 \seealso{
-Other Functions for trees: 
-\code{\link{extractValues}()},
-\code{\link{recordAncestor}()},
-\code{\link{subMatrix}()}
+Other Functions for trees:
+\code{\link[=extractValues]{extractValues()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=subMatrix]{subMatrix()}}
 }
 \author{
 Noa Brenner

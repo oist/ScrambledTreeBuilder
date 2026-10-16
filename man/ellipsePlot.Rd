@@ -28,10 +28,10 @@ clade.
 ellipsePlot(Halo_DF |> averageResults())
 }
 \seealso{
-Other Plotting functions: 
-\code{\link{MRCA_2D_plot}()},
-\code{\link{treeHeatMap}()},
-\code{\link{visualizeTree}()}
+Other Plotting functions:
+\code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
+\code{\link[=treeHeatMap]{treeHeatMap()}},
+\code{\link[=visualizeTree]{visualizeTree()}}
 }
 \author{
 Charles Plessy

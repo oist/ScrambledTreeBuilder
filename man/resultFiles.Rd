@@ -30,8 +30,8 @@ system.file("extdata/yaml", package = "ScrambledTreeBuilder") |> resultFiles()
 
 }
 \seealso{
-Other Data load functions: 
-\code{\link{formatStats}()}
+Other Data load functions:
+\code{\link[=formatStats]{formatStats()}}
 }
 \author{
 Charles Plessy

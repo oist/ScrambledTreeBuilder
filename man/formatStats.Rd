@@ -33,8 +33,8 @@ exDataFrame <- formatStats(yamlFileData)
 exDataFrame[1:10,1:6]
 }
 \seealso{
-Other Data load functions: 
-\code{\link{resultFiles}()}
+Other Data load functions:
+\code{\link[=resultFiles]{resultFiles()}}
 }
 \author{
 Noah Brenner

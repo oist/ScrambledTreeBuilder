@@ -42,18 +42,18 @@ visualizeTree(Halo_Tree, value = Halo_Tree$Scrambling_index)
 visualizeTree(Halo_Tree, "Scrambling_index") # same
 }
 \seealso{
-Other Focal clade functions: 
-\code{\link{eog}()},
-\code{\link{focalClade}()},
-\code{\link{recordAncestor}()},
-\code{\link{recordClades}()},
-\code{\link{subMatrix}()},
-\code{\link{subTree}()}
+Other Focal clade functions:
+\code{\link[=eog]{eog()}},
+\code{\link[=focalClade]{focalClade()}},
+\code{\link[=recordAncestor]{recordAncestor()}},
+\code{\link[=recordClades]{recordClades()}},
+\code{\link[=subMatrix]{subMatrix()}},
+\code{\link[=subTree]{subTree()}}
 
-Other Plotting functions: 
-\code{\link{MRCA_2D_plot}()},
-\code{\link{ellipsePlot}()},
-\code{\link{treeHeatMap}()}
+Other Plotting functions:
+\code{\link[=MRCA_2D_plot]{MRCA_2D_plot()}},
+\code{\link[=ellipsePlot]{ellipsePlot()}},
+\code{\link[=treeHeatMap]{treeHeatMap()}}
 }
 \author{
 Noah Brenner
