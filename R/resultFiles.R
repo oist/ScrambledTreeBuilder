@@ -16,6 +16,7 @@
 #' identifiers to be used by the `formatStats()` function.
 #'
 #' @author Charles Plessy
+#' @author Priscila Biller
 #'
 #' @family Data load functions
 #'
@@ -28,8 +29,8 @@
 resultFiles <- function (dir, remove = "removedAssemblies.txt") {
     files <- list.files(dir, pattern = ".yaml$|.yaml.bz2$|.yaml.gz$|.yaml.gz$", full.names = TRUE)
     names <- basename(files) |>
-      sub(pattern = ".gz|.bz2|.xz", replacement = "") |>
-      sub(pattern = ".yaml",        replacement = "")
+      sub(pattern = "\\.(gz|bz2|xz)$", replacement = "") |>
+      sub(pattern = "\\.yaml",        replacement = "")
     names(files) <- names
     if(file.exists(remove)) {
       toRemove <- read.delim(remove, header = FALSE, col.names = c("pattern", "reason"))
