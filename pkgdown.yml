@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   ScrambledTreeBuilder: ScrambledTreeBuilder.html
-last_built: 2026-10-16T01:42Z
+last_built: 2026-10-23T05:39Z
 urls:
   reference: https://brennern.github.io/ScrambledTreeBuilder/reference
   article: https://brennern.github.io/ScrambledTreeBuilder/articles
