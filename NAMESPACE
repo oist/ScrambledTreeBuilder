@@ -69,16 +69,12 @@ importFrom(ggplot2,
 )
 importFrom(grDevices,
   dev.off,
-  png,
-  svg
+  png
 )
 importFrom(graphics,
-  axis,
-  barplot,
   legend,
   lines,
-  points,
-  text
+  points
 )
 importFrom(httr,
   GET,

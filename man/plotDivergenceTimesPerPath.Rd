@@ -4,7 +4,7 @@
 \alias{plotDivergenceTimesPerPath}
 \title{Plot stats about each path from tip to root.}
 \usage{
-plotDivergenceTimesPerPath(tree, pathEstimates, cladeName, fileFormat = "svg")
+plotDivergenceTimesPerPath(tree, pathEstimates, cladeName)
 }
 \arguments{
 \item{tree}{A \code{\link{ConvenientTblTree}} object.}
@@ -12,11 +12,12 @@ plotDivergenceTimesPerPath(tree, pathEstimates, cladeName, fileFormat = "svg")
 \item{pathEstimates}{Named list of dataframes, where each dataframe corresponds to a path from tip to root and its results.}
 
 \item{cladeName}{The name of the analyzed clade.}
-
-\item{fileFormat}{File format for saving the plot. Either \code{svg} or \code{png} options are available.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-This function saves a plot that shows, for each path from tip to root:
+This function creates a plot that shows, for each path from tip to root:
 \enumerate{
 \item how many ancestral nodes have information from TimeTree;
 \item how many ancestral nodes do not have information from TimeTree because all tips belong to the same species;

@@ -4,17 +4,18 @@
 \alias{plotDivergenceTimesFromTimeTree}
 \title{Plot relation between divergence time and cumulative branch length for a clade.}
 \usage{
-plotDivergenceTimesFromTimeTree(tree, cladeName, fileFormat = "svg")
+plotDivergenceTimesFromTimeTree(tree, cladeName)
 }
 \arguments{
 \item{tree}{A \code{\link{ConvenientTblTree}} object.}
 
 \item{cladeName}{The name of the analyzed clade.}
-
-\item{fileFormat}{File format for saving the plot. Either \code{svg} or \code{png} options are available.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-This function saves a plot that shows the relationship between
+This function creates a plot that shows the relationship between
 divergence time (taken from TimeTree) and cumulative branch length
 for the whole clade.
 }

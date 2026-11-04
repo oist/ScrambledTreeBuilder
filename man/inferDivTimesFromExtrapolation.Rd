@@ -7,10 +7,8 @@
 inferDivTimesFromExtrapolation(
   pathToRoot,
   cladeName = NULL,
-  savePlots = FALSE,
   verbose = FALSE,
-  expectedVals = NULL,
-  models = c("t_gam", "t_scam", "t_gamdec", "t_iso", "t_lin", "t_exp", "t_power")
+  models = c("t_gamdec", "t_lin", "t_scam", "t_exp", "t_gam", "t_iso", "t_power")
 )
 }
 \arguments{
@@ -18,14 +16,8 @@ inferDivTimesFromExtrapolation(
 
 \item{cladeName}{An optional parameter that describes the dataset.}
 
-\item{savePlots}{Boolean flag. If \code{TRUE}, the function saves \code{.png} and \code{.svg} files containing
-a plot with cumulative branch length on the x-axis and divergence time on the y-axis.
-The plot shows the fitted prediction function, predicted values, and observed data.}
-
 \item{verbose}{Boolean flag (optional; default value is \code{FALSE}).
 If \code{TRUE}, the function prints messages about the computation and summary statistics for the dataset.}
-
-\item{expectedVals}{An optional dataframe with columns \code{cumBranchLen} and \code{divergenceTime} used for plotting.}
 
 \item{models}{An optional parameter defining which models will be used for extrapolating the data from TimeTree.
 Notice that only models with sufficient data are included in the results; the amount of information required varies by model.
@@ -36,15 +28,15 @@ Available options: \code{t_gam} (Generalized Additive Model),\code{t_scam} (Shap
 }
 \value{
 A named list with the following:
-1. \code{models} :  a vector of the models actually used to extrapolate the data from TimeTree.
+1. \code{models}:  a named list of the models actually used to extrapolate the data from TimeTree.
 A model passed via the input parameter \code{models} is omitted if there is
 insufficient data to use it. \code{NULL} is returned if no model was used.
-2. \code{path} :  The \code{\link{ConvenientTblTree}} object received as input with divergence-time estimates assigned
+2. \code{path}:  the \code{\link{ConvenientTblTree}} object received as input with divergence-time estimates assigned
 to ancestral nodes that lacked them.
-3. \code{known} : Number of points in the path with information (i.e., ancestral nodes with both cumulative branch length and divergence time).
-4. \code{unknown} : Number of points in the path without information (i.e., ancestral nodes with only cumulative branch length).
-5. \code{known_unique_cumblen} : Number of distinct cumulative branch lengths.
-6. \code{known_unique_divtime} : Number of distinct divergence times.
+3. \code{known}: nodes used as the basis for inference.
+4. \code{unknown}: nodes whose divergence times were inferred.
+3. \code{x_grid}: Extra points spanning the region of known and unknown points where the models were evaluated.
+4. \code{prediction_grids}: A named list with one element per model, containing predictions for the unknown points (\code{unknown}) and the extra points (\code{x_grid}).
 }
 \description{
 This method infers the divergence time for nodes lacking them based on the divergence times from other nodes in the tree.
@@ -52,14 +44,15 @@ This method infers the divergence time for nodes lacking them based on the diver
 \details{
 The method first finds a function describing the relationship between cumulative branch length and divergence time.
 It then uses this function to estimate divergence times for nodes that lack them, given their cumulative branch lengths.
-
-As the relationship between cumulative branch length and divergence time is not necessarily linear, the function uses
-a Generalized Additive Model (GAM) to infer this relationship.
 }
 \note{
 See functions \code{model_gam} (option \code{t_gam}), \code{model_scam} (option \code{t_scam}), \code{model_gamdec} (\code{t_gamdec}),
 \code{model_iso} (option \code{t_iso}), \code{model_lin} (option \code{t_lin}), \code{model_exp} (option \code{t_exp}),
 \code{model_power} (option \code{t_power}) for more details on each model.
+
+As the relationship between cumulative branch length and divergence time is not necessarily linear and varies for each clade,
+the model that seemed to best fit different cases is the Generalized Additive Model (GAM) with a decreasing monotonicity
+constraint (\code{t_gamdec}).
 }
 \author{
 Priscila Biller

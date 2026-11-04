@@ -4,7 +4,7 @@
 \alias{plotUnknownDistFromTips}
 \title{Plot the relation between distance from tips and lack of information from TimeTree.}
 \usage{
-plotUnknownDistFromTips(unknownTypes, cladeName, fileFormat = "svg")
+plotUnknownDistFromTips(unknownTypes, cladeName)
 }
 \arguments{
 \item{unknownTypes}{List where each element corresponds to a path from tip to root.
@@ -14,8 +14,9 @@ A distance equals to \code{1} means that the internal node is the direct parent 
 whereas a higher distance \code{n} means that the node is closer to the root.}
 
 \item{cladeName}{The name of the analyzed clade.}
-
-\item{fileFormat}{File format for saving the plot. Either \code{svg} or \code{png} options are available.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
 Plot the relation between distance from tips and lack of information from TimeTree.
