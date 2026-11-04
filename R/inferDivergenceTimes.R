@@ -136,14 +136,16 @@ getTimeTreePairs <- function(nodes, tree, ncbi_ids_timetree){
 #'
 #' @return The row in the dataframe corresponding to the most recent common ancestor of the two given nodes.
 #'
+#' @importFrom rlang .data
+#'
 #' @author Priscila Biller
 getMRCA <- function(taxid1, taxid2, timelines){
   # Gets the TimeTree timelines of both nodes.
-  timeline_1 <- timelines[[as.character(taxid1)]] |> dplyr::filter(divergenceTime > 0)
-  timeline_2 <- timelines[[as.character(taxid2)]] |> dplyr::filter(divergenceTime > 0)
+  timeline_1 <- timelines[[as.character(taxid1)]] |> dplyr::filter(.data$divergenceTime > 0)
+  timeline_2 <- timelines[[as.character(taxid2)]] |> dplyr::filter(.data$divergenceTime > 0)
   # Computes the intersection of two timelines (= all common ancestors) and 
   # selects the row with the lowest divergence time, which corresponds to the most recent common ancestor (MRCA).
-  dplyr::intersect(timeline_1,timeline_2) |> dplyr::slice_min(order_by=divergenceTime, n=1)
+  dplyr::intersect(timeline_1,timeline_2) |> dplyr::slice_min(order_by=.data$divergenceTime, n=1)
 }
 
 ##################################################
@@ -460,37 +462,48 @@ model_power <- function(known, unknown, x_grid=NULL){
 # Plotting functions.
 ##################################################
 
+theme_base_plot <- function(base_size = 14, base_family = "sans") {
+  ggplot2::theme_bw(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      panel.grid = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5),
+      axis.ticks = ggplot2::element_line(colour = "black", linewidth = 0.5),
+      axis.text = ggplot2::element_text(colour = "black", size = base_size),
+      axis.text.y = ggplot2::element_text(angle = 90, hjust = 0.5, vjust = 0.5),
+      axis.title = ggplot2::element_text(colour = "black", size = base_size),
+      plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", colour = "black", size = base_size * 1.1),
+      legend.position = "none"
+    )
+}
+
 #' Plot relation between divergence time and cumulative branch length for a clade.
 #' 
-#' This function saves a plot that shows the relationship between 
+#' This function creates a plot that shows the relationship between 
 #' divergence time (taken from TimeTree) and cumulative branch length
 #' for the whole clade.
 #'
 #' @param tree A [`ConvenientTblTree`] object.
 #' @param cladeName The name of the analyzed clade.
-#' @param fileFormat File format for saving the plot. Either `svg` or `png` options are available.
 #'
-#' @importFrom grDevices svg png dev.off
+#' @return A `ggplot` object.
+#'
+#' @importFrom rlang .data
 #'
 #' @author Priscila Biller
-plotDivergenceTimesFromTimeTree <- function(tree, cladeName, fileFormat="svg"){
+plotDivergenceTimesFromTimeTree <- function(tree, cladeName){
   # Plot known divergence times from Time tree.
-  if (fileFormat == "svg"){
-    svg(filename=paste0(cladeName, "_obs.svg"), width=1800, height=1200)  
-  } else {
-    png(filename=paste0(cladeName, "_obs.png"), width=1800, height=1200, res=200) 
-  }
   ancestors <- tree$node[tree$isTip == FALSE] |> purrr::set_names()
   observed  <- tree[(tree$node %in% ancestors) & (tree$isTimeExtrapolated == FALSE),]
   unknown   <- tree[(tree$node %in% ancestors) & (tree$isTimeExtrapolated == TRUE),]
-  plot(observed$cumBranchLen, observed$divergenceTime, pch=19, col="black", xlab="Cumulative branch length", 
-        ylab="Divergence time",main = paste0(cladeName, " - Timetree data: known=",nrow(observed),", unknown=",nrow(unknown)))
-  dev.off()
+  ggplot2::ggplot(observed, ggplot2::aes(x = .data$cumBranchLen, y = .data$divergenceTime)) + 
+    ggplot2::geom_point(shape = 19, size = 3, colour = "black") + 
+    ggplot2::labs(x="Cumulative branch length", y="Divergence time", title = paste0(cladeName, " - Timetree data: known=", nrow(observed),", unknown=", nrow(unknown))) + 
+    theme_base_plot() #ggplot2::theme_classic()
 }
 
 #' Plot stats about each path from tip to root.
 #' 
-#' This function saves a plot that shows, for each path from tip to root:
+#' This function creates a plot that shows, for each path from tip to root:
 #' 1. how many ancestral nodes have information from TimeTree;
 #' 2. how many ancestral nodes do not have information from TimeTree because all tips belong to the same species;
 #' 3. how many ancestral nodes do not have information from TimeTree, but tips are different species.
@@ -498,13 +511,13 @@ plotDivergenceTimesFromTimeTree <- function(tree, cladeName, fileFormat="svg"){
 #' @param tree A [`ConvenientTblTree`] object.
 #' @param pathEstimates Named list of dataframes, where each dataframe corresponds to a path from tip to root and its results.
 #' @param cladeName The name of the analyzed clade.
-#' @param fileFormat File format for saving the plot. Either `svg` or `png` options are available.
 #'
-#' @importFrom grDevices svg png dev.off
-#' @importFrom graphics barplot text
+#' @return A `ggplot` object.
+#'
+#' @importFrom rlang .data
 #'
 #' @author Priscila Biller
-plotDivergenceTimesPerPath <- function(tree, pathEstimates, cladeName, fileFormat="svg"){
+plotDivergenceTimesPerPath <- function(tree, pathEstimates, cladeName){
   # Join all dataframes in a single one.
   pathEstimates_all <- dplyr::bind_rows(pathEstimates,.id = "node_ref")
   # Create a new column to be used in the bar plot.
@@ -528,27 +541,20 @@ plotDivergenceTimesPerPath <- function(tree, pathEstimates, cladeName, fileForma
   sort_order <- order(timeTreeInfoPerPath, nbNodesPerPath, decreasing = TRUE, na.last = TRUE)
   counts_sorted <- counts[sort_order, ]
 
-  if (fileFormat == "svg"){
-    svg(filename=paste0(cladeName, "_obs_perpath.svg"), width=1800, height=1200)
-  } else {
-    png(filename=paste0(cladeName, "_obs_perpath.png"), width=1800, height=1200, res=200)
-  }
+  # Convert counts to the long format required by ggplot.
+  plot_data        <- as.data.frame(as.table(counts_sorted))
+  names(plot_data) <- c("node_ref", "bartype", "count")
+  plot_data$node_ref <- factor(plot_data$node_ref, levels=rownames(counts_sorted))
 
-  bar_positions <- barplot(t(counts_sorted),beside = FALSE,col = c("steelblue", "goldenrod", "tomato"),xlab = "Path",ylab = "Number of ancestral nodes",legend.text = bartype_levels, args.legend = list(x = "topright",bty = "n"))
-
-  # Add labels inside each stacked bar.
-  cumulative <- apply(counts_sorted, 1, cumsum)
-  for (node_i in seq_len(nrow(counts_sorted))) {
-    segment_bottom <- 0.0
-    for (bar_j in seq_along(bartype_levels)) {
-      value <- counts_sorted[node_i, bar_j]
-      if (value > 0) {
-        text(x=bar_positions[node_i], y=segment_bottom+value/2, labels=value, col="white", cex=0.8)
-      }
-      segment_bottom <- segment_bottom + value
-    }
-  }
-  dev.off()
+  ggplot2::ggplot(plot_data, ggplot2::aes(x = .data$node_ref, y = .data$count, fill = .data$bartype)) + 
+    ggplot2::geom_col(colour="black", linewidth=0.25, width=0.9, position = ggplot2::position_stack(reverse = TRUE)) + 
+    ggplot2::geom_text(ggplot2::aes(label = ifelse(.data$count > 0, .data$count, "")), position = ggplot2::position_stack(vjust=0.5, reverse=TRUE), color = "white", size = 3) + 
+    ggplot2::scale_fill_manual(values = c("Not extrapolated" = "steelblue", "Extrapolated, not single species" = "goldenrod", "Extrapolated, single species" = "tomato"), breaks = bartype_levels) + 
+    ggplot2::scale_x_discrete(breaks = function(x) {x[seq(1, length(x), by = max(1, ceiling(length(x)*0.05)))]}) +
+    ggplot2::labs(title = paste0(cladeName, " - observations per path"), x="Path", y="Number of ancestral nodes", fill=NULL) +
+    theme_base_plot() +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.25))) + 
+    ggplot2::theme(legend.position = "inside", legend.position.inside = c(1, 1), legend.justification = c(1, 1), legend.background = ggplot2::element_rect(fill = grDevices::adjustcolor("white", alpha.f = 0.5), colour = "black", linewidth = 0.3), legend.key = ggplot2::element_rect(fill = NA, colour = NA))
 }
 
 #' Plot the relation between distance from tips and lack of information from TimeTree.
@@ -559,37 +565,97 @@ plotDivergenceTimesPerPath <- function(tree, pathEstimates, cladeName, fileForma
 #'                     A distance equals to `1` means that the internal node is the direct parent of a leaf, 
 #'                     whereas a higher distance `n` means that the node is closer to the root.
 #' @param cladeName The name of the analyzed clade.
-#' @param fileFormat File format for saving the plot. Either `svg` or `png` options are available.
 #'
-#' @importFrom grDevices svg png dev.off
-#' @importFrom graphics points lines axis
+#' @return A `ggplot` object.
+#'
+#' @importFrom rlang .data
 #'
 #' @author Priscila Biller
-plotUnknownDistFromTips <- function(unknownTypes, cladeName, fileFormat="svg"){
-  x_values <- rep(seq_along(unknownTypes),lengths(unknownTypes))
-  y_values <- unlist(unknownTypes,use.names = FALSE)
+plotUnknownDistFromTips <- function(unknownTypes, cladeName){
+  plotData  <- data.frame(x = rep(seq_along(unknownTypes), lengths(unknownTypes)), y = unlist(unknownTypes, use.names = FALSE))
+  xtickscnt <- max(1, ceiling(length(unknownTypes)*0.05))
+  ggplot2::ggplot(plotData, ggplot2::aes(x = .data$x, y = .data$y, group = .data$x)) +
+    ggplot2::geom_line(linewidth=0.5) +
+    ggplot2::geom_point(shape = 19) +
+    ggplot2::scale_x_continuous(breaks = seq(1, length(unknownTypes), by=xtickscnt), labels = names(unknownTypes)[seq(1, length(unknownTypes), by = xtickscnt)], limits = c(0.5, length(unknownTypes) + 0.5)) +
+    ggplot2::labs(x = "Internal node with unknown time", y = "Distance from leaves", title = cladeName) +
+    theme_base_plot()
+}
 
-  if (fileFormat == "svg"){
-    svg(filename=paste0(cladeName, "_unk_tipdist.svg"), width=1800, height=1200)
-  } else {
-    png(filename=paste0(cladeName, "_unk_tipdist.png"), width=1800, height=1200, res=200)
+
+#' Plot the divergence times estimated with different models by extrapolation.
+#' 
+#' @param cladeName The name of the analyzed clade.
+#' @param estimatedResults The output from the function `inferDivTimesFromExtrapolation`.
+#' @param expectedVals An optional dataframe with columns `cumBranchLen` and `divergenceTime` for checking purposes.
+#'
+#' @return  A list with the following: 
+#'          1. `plot` :  A `ggplot` object.
+#'          2. `plotLabel` :  A title for the plot.
+#'
+#' @importFrom rlang .data
+#'
+#' @author Priscila Biller
+plotEstimatedDivergenceTimes <- function(cladeName, estimatedResults, expectedVals=NULL){
+
+  models <- estimatedResults$models
+  if (is.null(models)) return(NULL)
+
+  # Output from the function `inferDivTimesFromExtrapolation`.
+  pathToRoot       <- estimatedResults$path
+  known            <- estimatedResults$known
+  unknown          <- estimatedResults$unknown
+  x_grid           <- estimatedResults$x_grid
+  prediction_grids <- estimatedResults$prediction_grids
+
+  known_range   <- range(known$cumBranchLen, na.rm = TRUE)
+  inside_known  <- (x_grid >= known_range[1]) & (x_grid <= known_range[2])
+
+  # Plot known observations and predictions.
+  plotLabel <- paste0("node",pathToRoot$node[!pathToRoot$node %in% pathToRoot$parent])
+  plotLabel <- ifelse(is.null(cladeName),    plotLabel, paste0(cladeName,"_",plotLabel))   
+  plotLabel <- ifelse(is.null(expectedVals), plotLabel, paste0(plotLabel,"_groundtruth"))   
+   
+  # Combine prediction grids from all models.
+  pred_grids_all <- unlist(lapply(prediction_grids, function(model_grid) {model_grid$pred_grid}), use.names=FALSE)
+  y_values <- c(known$divergenceTime, if (!is.null(expectedVals)) expectedVals$divergenceTime, pred_grids_all)
+  y_values <- y_values[is.finite(y_values)]
+
+  x_limits <- range(pathToRoot$cumBranchLen, na.rm=TRUE)
+  y_limits <- range(y_values, na.rm=TRUE)
+
+  # Plot observed values.
+  plot <- ggplot2::ggplot() +
+          ggplot2::geom_point(data = known, ggplot2::aes(x = .data$cumBranchLen, y = .data$divergenceTime), color = "black", size = 3) +
+          ggplot2::labs(x = "Cumulative branch length", y = "Divergence time", title = paste0(plotLabel, ", known=", nrow(known), " [unique: cumblen=", length(unique(known$cumBranchLen)), "; divtime=", length(unique(known$divergenceTime)), "] / unk=", nrow(unknown)), color = "Model") +
+          theme_base_plot()
+
+  # Plot predictions.
+  colors <- character()
+  for (model_name in names(models)) {
+    model_info         <- models[[model_name]]
+    model_color        <- model_info$color
+    model_predictions  <- prediction_grids[[model_name]]
+    colors[model_name] <- model_color
+    # Solid line for interpolation.
+    plot <- plot + ggplot2::geom_line( data = data.frame(x = x_grid[inside_known],  y = model_predictions$pred_grid[inside_known],    model = model_name), ggplot2::aes(x = .data$x, y = .data$y, color = .data$model), linewidth = 1)
+    # Dashed line for extrapolation (if any).
+    if (any(!inside_known)) {
+      plot <- plot + ggplot2::geom_line( data = data.frame(x = x_grid[!inside_known], y = model_predictions$pred_grid[!inside_known], model = model_name), ggplot2::aes(x = .data$x, y = .data$y, color = .data$model), linewidth = 1, linetype = "dashed")
+    }
+    # Dots for predictions.
+    plot <- plot + ggplot2::geom_point(data = data.frame(x = unknown$cumBranchLen,  y = model_predictions$pred_unknown,               model = model_name), ggplot2::aes(x = .data$x, y = .data$y, color = .data$model), size = 2) 
   }
 
-  # Set up an empty plot
-  plot(x_values, y_values, type="n", xaxt="n", xlim=c(0.5, length(unknownTypes) + 0.5), ylim =range(y_values), xlab="Internal node with unknown time", ylab="Distance from leaves")
-
-  # Add points and vertical lines for each list element
-  for (i in seq_along(unknownTypes)) {
-    y <- unknownTypes[[i]]
-    x <- rep(i, length(y))
-    points(x,y,pch = 19)
-    # Connect points with the same x-coordinate
-    lines(x,y,lwd = 2)
+  # Plot expected values.
+  if(!is.null(expectedVals)){
+    plot <- plot + ggplot2::geom_point(data = expectedVals, ggplot2::aes(x = .data$cumBranchLen, y = .data$divergenceTime), shape = 4, color = "black", size = 3, stroke = 1)
   }
-
-  # Add labels for list elements
-  axis(side=1, at=seq_along(unknownTypes), labels=names(unknownTypes))
-  dev.off()
+  # Add legend.
+  plot <- plot +
+        ggplot2::scale_color_manual(values = colors, breaks = names(models)) +
+        ggplot2::theme(legend.position = "inside", legend.position.inside = c(1, 1), legend.justification = c(1, 1), legend.background = ggplot2::element_rect(fill = grDevices::adjustcolor("white", alpha.f = 0.5), colour = "black", linewidth = 0.3), legend.key = ggplot2::element_rect(fill = NA, colour = NA))
+  list(plot=plot, plotLabel=plotLabel)
 }
 
 ##################################################
@@ -648,17 +714,10 @@ inferDivTimesFromTimeTree <- function(node_pairs, timelines){
 #' The method first finds a function describing the relationship between cumulative branch length and divergence time.
 #' It then uses this function to estimate divergence times for nodes that lack them, given their cumulative branch lengths.
 #'
-#' As the relationship between cumulative branch length and divergence time is not necessarily linear, the function uses 
-#' a Generalized Additive Model (GAM) to infer this relationship.
-#'
 #' @param pathToRoot A [`ConvenientTblTree`] object containing all nodes along the path from a tip to the root of the tree.
 #' @param cladeName An optional parameter that describes the dataset.
-#' @param savePlots Boolean flag. If `TRUE`, the function saves `.png` and `.svg` files containing 
-#'                  a plot with cumulative branch length on the x-axis and divergence time on the y-axis. 
-#'                  The plot shows the fitted prediction function, predicted values, and observed data.
 #' @param verbose Boolean flag (optional; default value is `FALSE`). 
 #'                If `TRUE`, the function prints messages about the computation and summary statistics for the dataset.
-#' @param expectedVals An optional dataframe with columns `cumBranchLen` and `divergenceTime` used for plotting.
 #' @param models  An optional parameter defining which models will be used for extrapolating the data from TimeTree.
 #'                Notice that only models with sufficient data are included in the results; the amount of information required varies by model. 
 #'                Available options: `t_gam` (Generalized Additive Model),`t_scam` (Shape Constrained Additive Model),
@@ -667,26 +726,29 @@ inferDivTimesFromTimeTree <- function(node_pairs, timelines){
 #'                `t_exp` (Exponential model),`t_power` (Power-law model).
 #'
 #' @return A named list with the following:
-#'         1. `models` :  a vector of the models actually used to extrapolate the data from TimeTree. 
-#'                        A model passed via the input parameter `models` is omitted if there is 
-#'                        insufficient data to use it. `NULL` is returned if no model was used.
-#'         2. `path` :  The [`ConvenientTblTree`] object received as input with divergence-time estimates assigned 
-#'                      to ancestral nodes that lacked them.
-#'         3. `known` : Number of points in the path with information (i.e., ancestral nodes with both cumulative branch length and divergence time).
-#'         4. `unknown` : Number of points in the path without information (i.e., ancestral nodes with only cumulative branch length).
-#'         5. `known_unique_cumblen` : Number of distinct cumulative branch lengths.
-#'         6. `known_unique_divtime` : Number of distinct divergence times.
+#'         1. `models`:  a named list of the models actually used to extrapolate the data from TimeTree. 
+#'                       A model passed via the input parameter `models` is omitted if there is 
+#'                       insufficient data to use it. `NULL` is returned if no model was used.
+#'         2. `path`:  the [`ConvenientTblTree`] object received as input with divergence-time estimates assigned 
+#'                     to ancestral nodes that lacked them.
+#'         3. `known`: nodes used as the basis for inference.
+#'         4. `unknown`: nodes whose divergence times were inferred.
+#'         3. `x_grid`: Extra points spanning the region of known and unknown points where the models were evaluated.
+#'         4. `prediction_grids`: A named list with one element per model, containing predictions for the unknown points (`unknown`) and the extra points (`x_grid`).
 #'
 #' @note  See functions `model_gam` (option `t_gam`), `model_scam` (option `t_scam`), `model_gamdec` (`t_gamdec`), 
 #'        `model_iso` (option `t_iso`), `model_lin` (option `t_lin`), `model_exp` (option `t_exp`), 
 #'        `model_power` (option `t_power`) for more details on each model.
 #'
+#' @note  As the relationship between cumulative branch length and divergence time is not necessarily linear and varies for each clade, 
+#'        the model that seemed to best fit different cases is the Generalized Additive Model (GAM) with a decreasing monotonicity 
+#'        constraint (`t_gamdec`).
+#'
 #' @importFrom grDevices png dev.off
 #' @importFrom graphics lines points legend
 #'
 #' @author Priscila Biller
-inferDivTimesFromExtrapolation <- function(pathToRoot, cladeName=NULL, savePlots=FALSE, verbose=FALSE,
-      expectedVals=NULL, models=c("t_gam","t_scam","t_gamdec","t_iso","t_lin","t_exp","t_power")){
+inferDivTimesFromExtrapolation <- function(pathToRoot, cladeName=NULL, verbose=FALSE, models=c("t_gamdec","t_lin","t_scam","t_exp","t_gam","t_iso","t_power")){
 
   # Sort nodes by cumulative branch length.
   pathToRoot     <- pathToRoot[order(pathToRoot$cumBranchLen), ]
@@ -717,14 +779,11 @@ inferDivTimesFromExtrapolation <- function(pathToRoot, cladeName=NULL, savePlots
   )
 
   # Make predictions with different models.
-  models_used      <- character()
+  models_used      <- list()
   prediction_grids <- list()
 
-  # Grid for plotting predictions.
+  # Grid with extra predictions (used for plotting).
   x_grid <- seq(min(c(known$cumBranchLen, pathToRoot$cumBranchLen), na.rm = TRUE), max(c(known$cumBranchLen, pathToRoot$cumBranchLen), na.rm=TRUE), length.out=300)
-  known_range   <- range(known$cumBranchLen, na.rm = TRUE)
-  inside_known  <- x_grid >= known_range[1] & x_grid <= known_range[2]
-  outside_known <- x_grid < known_range[1] | x_grid > known_range[2]
   for (model_name in models) {
     model_info        <- prediction_models_info[[model_name]]
     model_function    <- model_info$func
@@ -738,57 +797,14 @@ inferDivTimesFromExtrapolation <- function(pathToRoot, cladeName=NULL, savePlots
 
     # Estimate divergence times.
     if (!model_name %in% names(pathToRoot)) {pathToRoot[[model_name]] <- NA}
-    models_used       <- c(models_used, model_name)
+    models_used[[model_name]] <- model_info
     model_predictions <- model_function(known=known, unknown=unknown, x_grid=x_grid)
 
     # Save predictions.
     pathToRoot[[model_name]][idx_unknown] <- model_predictions$pred_unknown
     prediction_grids[[model_name]] <- list(pred_grid=model_predictions$pred_grid, pred_unknown=model_predictions$pred_unknown)
   }
-
-  # Plot known observations and predictions.
-  if ((savePlots) && (length(models_used) > 0)){
-    plotLabel <- paste0("node",pathToRoot$node[!pathToRoot$node %in% pathToRoot$parent])
-    plotLabel <- ifelse(is.null(cladeName),    plotLabel, paste0(cladeName,"_",plotLabel))   
-    plotLabel <- ifelse(is.null(expectedVals), plotLabel, paste0(plotLabel,"_groundtruth"))   
-     
-    png(filename=paste0(plotLabel, "_extrapolation.png"), width=1800, height=1200, res=200)
-
-    # Combine prediction grids from all models
-    pred_grids_all <- unlist(lapply(prediction_grids, function(model_grid) {model_grid$pred_grid}), use.names=FALSE)
-    y_values <- c(known$divergenceTime, if (!is.null(expectedVals)) expectedVals$divergenceTime, pred_grids_all)
-    y_values <- y_values[is.finite(y_values)]
-
-    x_limits <- range(pathToRoot$cumBranchLen, na.rm=TRUE)
-    y_limits <- range(y_values, na.rm=TRUE)
-
-    # Plot observed values.
-    plot(known$cumBranchLen,known$divergenceTime, pch=19, col="black", cex=1.5, xlim=x_limits, ylim=y_limits,
-      xlab="Cumulative branch length", ylab="Divergence time", 
-      main=paste0(plotLabel,", known=",nrow(known),"[ unique: cumblen=", length(unique(known$cumBranchLen)), "; divtime=", length(unique(known$divergenceTime)), "] / unk=", nrow(unknown))
-      )
-    # Plot predictions.
-    colors      <- character()
-    for (model_name in models_used) {
-      model_info        <- prediction_models_info[[model_name]]
-      model_color       <- model_info$color
-      model_predictions <- prediction_grids[[model_name]]
-      colors            <- c(colors, model_color)
-      lines(x_grid[outside_known], model_predictions$pred_grid[outside_known], col=model_color, lwd=2, lty=2)  # Dashed line for extrapolation.
-      lines(x_grid[inside_known],  model_predictions$pred_grid[inside_known],  col=model_color, lwd=2)         # Solid line for interpolation.
-      points(unknown$cumBranchLen, model_predictions$pred_unknown,             col=model_color, pch=19, cex=1) # Dots for predictions.
-    }
-    # Plot expected values.
-    if(!is.null(expectedVals)){
-      points(expectedVals$cumBranchLen,expectedVals$divergenceTime, pch=4, col="black", lwd=2, cex=1.5)  
-    }
-    # Add legend.
-    legend("topright",legend=models_used, col=colors, lwd=2, lty=1, bty="n", title="Model")
-    dev.off()
-  }
-  list(models=models_used, path=pathToRoot, 
-    known=nrow(known), unknown=nrow(unknown),
-    known_unique_cumblen=length(unique(known$cumBranchLen)), known_unique_divtime=length(unique(known$divergenceTime)))
+  list(models=models_used, path=pathToRoot, known=known, unknown=unknown, x_grid=x_grid, prediction_grids=prediction_grids)
 }
 
 #' Estimate divergence time for ancestral nodes
@@ -933,7 +949,7 @@ inferDivergenceTimes <- function(tree, timelines=NULL, cladeName=NULL, savePlots
       }
     }
     # Infer divergence times for nodes that are missing that information.
-    extrapRes  <- inferDivTimesFromExtrapolation(pathToRoot=pathToRoot,cladeName=cladeName,savePlots=savePlots,expectedVals=expectedVals,models=models,verbose=verbose)
+    extrapRes  <- inferDivTimesFromExtrapolation(pathToRoot=pathToRoot,cladeName=cladeName,models=models,verbose=verbose)
     if(!is.null(extrapRes$models)){
       pathToRoot <- extrapRes$path
       idx <- match(tree$node, pathToRoot$node)
@@ -942,7 +958,7 @@ inferDivergenceTimes <- function(tree, timelines=NULL, cladeName=NULL, savePlots
       # thus paths processed first will have more reliable estimates, since the estimates are based
       # on more information available.
       update_idxs <- is.na(tree$divergenceTime) & !is.na(idx)
-      for (model_name in extrapRes$models) {
+      for (model_name in names(extrapRes$models)) {
         estimates    <- pathToRoot[[model_name]][idx]
         has_estimate <- update_idxs & !is.na(estimates)
         # Update tree with new estimates.
@@ -952,18 +968,26 @@ inferDivergenceTimes <- function(tree, timelines=NULL, cladeName=NULL, savePlots
       }
       # Update path with new estimates.
       pathsLeafToRoot[[i]] <- pathToRoot
+
+      if (savePlots) {
+        plotInfo <- plotEstimatedDivergenceTimes(cladeName, extrapRes, expectedVals=expectedVals)
+        ggplot2::ggsave(filename=paste0(plotInfo$plotLabel, ".svg"), plot=plotInfo$plot, width=9, height=6)
+        ggplot2::ggsave(filename=paste0(plotInfo$plotLabel, ".png"), plot=plotInfo$plot, width=9, height=6, dpi=200)
+      }
     }
   }
 
   # Saves plots and prints stats.
   if(savePlots){
     # Plot known divergence times from Time tree.
-    plotDivergenceTimesFromTimeTree(tree, cladeName, fileFormat="svg")
-    plotDivergenceTimesFromTimeTree(tree, cladeName, fileFormat="png")
+    plot <- plotDivergenceTimesFromTimeTree(tree, cladeName)
+    ggplot2::ggsave(filename=paste0(cladeName, "_obs.svg"), plot=plot, width=9, height=6)
+    ggplot2::ggsave(filename=paste0(cladeName, "_obs.png"), plot=plot, width=9, height=6, dpi=200)
 
     # Plot how many known and unknown divergence times there are per path from leaf to root.
-    plotDivergenceTimesPerPath(tree, pathsLeafToRoot, cladeName, fileFormat="svg")
-    plotDivergenceTimesPerPath(tree, pathsLeafToRoot, cladeName, fileFormat="png")
+    plot <- plotDivergenceTimesPerPath(tree, pathsLeafToRoot, cladeName)
+    ggplot2::ggsave(filename=paste0(cladeName, "_obs_perpath.svg"), plot=plot, width=9, height=6)
+    ggplot2::ggsave(filename=paste0(cladeName, "_obs_perpath.png"), plot=plot, width=9, height=6, dpi=200)
   }
 
   # Print stats on internal nodes.
@@ -1050,7 +1074,9 @@ checkDivergenceTimeEstimates <- function(tree, timelines=NULL, cladeName=NULL, m
                       })
   unknownDistFromTips <- Filter(function(x) !is.null(x),unknownDistFromTips)
   if(length(unknownDistFromTips) > 0){
-    plotUnknownDistFromTips(unknownDistFromTips, cladeName, fileFormat="png")  
+    plot <- plotUnknownDistFromTips(unknownDistFromTips, cladeName)  
+    ggplot2::ggsave(filename=paste0(cladeName, "_unk_tipdist.svg"), plot=plot, width=9, height=6)
+    ggplot2::ggsave(filename=paste0(cladeName, "_unk_tipdist.png"), plot=plot, width=9, height=6, dpi=200)
   }
   print("Location of unknown nodes (1=close to leaf; n=root)")
   print(unknownDistFromTips)
@@ -1088,7 +1114,11 @@ checkDivergenceTimeEstimates <- function(tree, timelines=NULL, cladeName=NULL, m
           pathToRoot_erased <- pathToRoot
           pathToRoot_erased$divergenceTime[match(nodes_to_be_erased$node, pathToRoot_erased$node)] <- NA
           # Infer erased times.
-          extrapRes <- inferDivTimesFromExtrapolation(pathToRoot=pathToRoot_erased,cladeName=paste0(cladeName,"_",testName),savePlots=TRUE,expectedVals=nodes_to_be_erased,models=models)
+          extrapRes <- inferDivTimesFromExtrapolation(pathToRoot=pathToRoot_erased,cladeName=paste0(cladeName,"_",testName),models=models)
+          # Save plots comparing estimated and expected results.
+          plotInfo <- plotEstimatedDivergenceTimes(paste0(cladeName,"_",testName), extrapRes, expectedVals=nodes_to_be_erased)
+          ggplot2::ggsave(filename=paste0(plotInfo$plotLabel, ".svg"), plot=plotInfo$plot, width=9, height=6)
+          ggplot2::ggsave(filename=paste0(plotInfo$plotLabel, ".png"), plot=plotInfo$plot, width=9, height=6, dpi=200)
           # Compute accuracy.
           pathToRoot_res  <- extrapRes$path
           groundTruth_idx <- match(nodes_to_be_erased$node, pathToRoot_res$node)
