@@ -39,7 +39,10 @@ Imports:
     treeio,
     purrr,
     yaml,
-    httr
+    httr,
+    mgcv,
+    scam,
+    minpack.lm
 VignetteBuilder: knitr
 Collate: 
     'ConvenientTblTree.R'
@@ -57,6 +60,7 @@ Collate:
     'eog.R'
     'extractValues.R'
     'formatStats.R'
+    'inferDivergenceTimes.R'
     'makeMatrix.R'
     'makeTidyTree.R'
     'makeValueTibble.R'

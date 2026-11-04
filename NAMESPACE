@@ -67,22 +67,48 @@ importFrom(ggplot2,
   theme_bw,
   theme_minimal
 )
+importFrom(grDevices,
+  dev.off,
+  png
+)
+importFrom(graphics,
+  legend,
+  lines,
+  points
+)
 importFrom(httr,
   GET,
   content
 )
+importFrom(mgcv,
+  Predict.matrix,
+  gam,
+  mono.con,
+  pcls,
+  s,
+  smoothCon
+)
+importFrom(minpack.lm,nlsLM)
 importFrom(pheatmap,pheatmap)
 importFrom(rlang,.data)
+importFrom(scam,scam)
 importFrom(stats,
+  Gamma,
+  approx,
   as.dist,
   complete.cases,
+  deviance,
   hclust,
+  isoreg,
   loess,
   mad,
+  median,
   na.omit,
   predict,
   quantile,
-  sd
+  runif,
+  sd,
+  setNames
 )
 importFrom(tidytree,
   as.treedata,
@@ -93,6 +119,7 @@ importFrom(tidytree,
 )
 importFrom(treeio,MRCA)
 importFrom(utils,
+  combn,
   read.csv,
   read.delim
 )
